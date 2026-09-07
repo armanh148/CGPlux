@@ -203,14 +203,58 @@ export default function Footer({
 
       </div>
 
-      {/* Massive Agency Watermark - Full Width */}
-      <div className="w-full flex justify-center overflow-hidden pointer-events-none select-none">
+      {/* ── CGPLUX Signature Footer Strip (medtech-style) ── */}
+      <div className="relative w-full overflow-hidden select-none" style={{ height: "clamp(120px, 18vw, 260px)" }}>
+
+        {/* Gradient background */}
         <div
-          className="font-heading font-black tracking-tighter w-full text-center text-zinc-500"
+          className="absolute inset-0"
           style={{
-            fontSize: "clamp(80px, 24vw, 500px)",
-            letterSpacing: "-0.04em",
-            opacity: 1.00,
+            background: "linear-gradient(135deg, #0a0a0f 0%, #111118 40%, #0d0d14 70%, #080810 100%)",
+          }}
+        />
+
+        {/* Subtle radial glow — center */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: "radial-gradient(ellipse 80% 60% at 50% 100%, rgba(255,255,255,0.04) 0%, transparent 70%)",
+          }}
+        />
+
+        {/* Top bar: copyright + links */}
+        <div className="relative z-10 flex items-center justify-between px-6 lg:px-10 pt-5 pb-0">
+          <a
+            href="/terms"
+            className="font-mono text-[11px] uppercase tracking-widest text-white/40 hover:text-white/70 transition-colors duration-300"
+          >
+            Terms &amp; Conditions
+          </a>
+
+          <span className="font-mono text-[11px] uppercase tracking-widest text-white/40">
+            &copy; {new Date().getFullYear()} CGPLUX. All Rights Reserved.
+          </span>
+
+          <a
+            href="/privacy"
+            className="font-mono text-[11px] uppercase tracking-widest text-white/40 hover:text-white/70 transition-colors duration-300"
+          >
+            Privacy Policy
+          </a>
+        </div>
+
+        {/* Giant watermark text */}
+        <div
+          className="absolute bottom-0 left-0 w-full text-center font-heading font-black leading-none pointer-events-none"
+          style={{
+            fontSize: "clamp(90px, 22vw, 420px)",
+            letterSpacing: "-0.035em",
+            color: "transparent",
+            WebkitTextStroke: "1px rgba(255,255,255,0.10)",
+            backgroundImage: "linear-gradient(180deg, rgba(255,255,255,0.13) 0%, rgba(255,255,255,0.04) 100%)",
+            WebkitBackgroundClip: "text",
+            backgroundClip: "text",
+            transform: "translateY(18%)",
           }}
         >
           CGPLUX
