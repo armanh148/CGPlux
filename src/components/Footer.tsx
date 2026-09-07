@@ -204,15 +204,15 @@ export default function Footer({
       </div>
 
       {/* ── CGPLUX Signature Footer Strip ── */}
-      <div className="relative w-full flex items-center justify-center overflow-hidden py-10 md:py-16 select-none bg-[#09090b] border-t border-white/[0.06]">
+      <div className="relative w-full flex items-center justify-center overflow-hidden py-6 sm:py-8 md:py-12 select-none bg-[#09090b] border-t border-white/[0.06]">
         <div
-          className="w-full font-heading font-black tracking-tight text-center leading-none pointer-events-none px-4"
+          className="w-full font-heading font-black tracking-tighter text-center leading-none pointer-events-none whitespace-nowrap select-none"
           style={{
-            fontSize: "clamp(48px, 14vw, 220px)",
-            letterSpacing: "-0.02em",
+            fontSize: "clamp(56px, 24vw, 560px)",
+            letterSpacing: "-0.04em",
             color: "transparent",
-            WebkitTextStroke: "1.5px rgba(255, 255, 255, 0.25)",
-            backgroundImage: "linear-gradient(180deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0.08) 100%)",
+            WebkitTextStroke: "1.5px rgba(255, 255, 255, 0.28)",
+            backgroundImage: "linear-gradient(180deg, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0.08) 100%)",
             WebkitBackgroundClip: "text",
             backgroundClip: "text",
           }}

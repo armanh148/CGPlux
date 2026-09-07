@@ -1,137 +1,218 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 
-interface GlitterWrapProps {
-  /** Number of star particles */
-  count?: number;
-  /** Speed multiplier — higher = faster warp */
-  speed?: number;
-  /** Opacity of the canvas overlay */
-  opacity?: number;
-  className?: string;
+interface GlitterParticle {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  size: number;
+  baseAlpha: number;
+  twinkleSpeed: number;
+  phase: number;
+  isDiamond: boolean;
+  color: string;
 }
 
-/**
- * GlitterWrap — Starfield warp / hyperspace effect.
- * Canvas-based, zero-dependency, fully performant (RAF + offscreen state).
- * Adapted from originkit's GlitterWrap component spec.
- */
+export interface GlitterWrapProps {
+  /** Total number of glitter particles (default: 120) */
+  particleCount?: number;
+  count?: number; // fallback alias
+  /** Global speed multiplier (default: 1) */
+  speed?: number;
+  /** Global canvas opacity (default: 0.85) */
+  opacity?: number;
+  /** Custom particle colors (defaults to luminous white & platinum zinc) */
+  colors?: string[];
+  /** Container CSS classes */
+  className?: string;
+  /** Optional wrapped children */
+  children?: React.ReactNode;
+}
+
 export default function GlitterWrap({
-  count = 180,
-  speed = 0.6,
-  opacity = 0.55,
+  particleCount,
+  count,
+  speed = 1,
+  opacity = 0.85,
+  colors = ["#ffffff", "#e4e4e7", "#f4f4f5", "#a1a1aa"],
   className = "",
+  children,
 }: GlitterWrapProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const totalCount = particleCount ?? count ?? 130;
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     let animId: number;
-    let w = canvas.offsetWidth;
-    let h = canvas.offsetHeight;
+    let width = 0;
+    let height = 0;
+    let dpr = 1;
 
-    // ── Resize handler ──
-    const resize = () => {
-      w = canvas.offsetWidth;
-      h = canvas.offsetHeight;
-      canvas.width = w;
-      canvas.height = h;
+    // Mouse tracking for subtle parallax
+    let targetMouseX = 0;
+    let targetMouseY = 0;
+    let mouseX = 0;
+    let mouseY = 0;
+
+    const getDimensions = () => {
+      const parent = canvas.parentElement;
+      const w = parent ? parent.clientWidth : window.innerWidth;
+      const h = parent ? parent.clientHeight : window.innerHeight;
+      return {
+        w: Math.max(w, 300),
+        h: Math.max(h, 300),
+      };
     };
+
+    const resize = () => {
+      const { w, h } = getDimensions();
+      width = w;
+      height = h;
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+      canvas.width = Math.floor(width * dpr);
+      canvas.height = Math.floor(height * dpr);
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.scale(dpr, dpr);
+    };
+
     resize();
-    const ro = new ResizeObserver(resize);
-    ro.observe(canvas);
 
-    // ── Star state ──
-    interface Star {
-      x: number;
-      y: number;
-      z: number;
-      px: number;
-      py: number;
-      size: number;
-      bright: number;
-    }
+    // Spawn glitter particles
+    const createParticle = (): GlitterParticle => {
+      const isDiamond = Math.random() < 0.22; // 22% are sparkling diamond stars
+      return {
+        x: Math.random() * (width || window.innerWidth),
+        y: Math.random() * (height || window.innerHeight),
+        vx: (Math.random() - 0.5) * 0.35 * speed,
+        vy: (-(Math.random() * 0.45 + 0.15)) * speed, // gently float upward
+        size: isDiamond ? Math.random() * 1.6 + 1.2 : Math.random() * 1.5 + 0.6,
+        baseAlpha: Math.random() * 0.5 + 0.35,
+        twinkleSpeed: Math.random() * 0.04 + 0.015,
+        phase: Math.random() * Math.PI * 2,
+        isDiamond,
+        color: colors[Math.floor(Math.random() * colors.length)],
+      };
+    };
 
-    const makestar = (): Star => ({
-      x: (Math.random() - 0.5) * w * 2,
-      y: (Math.random() - 0.5) * h * 2,
-      z: Math.random() * w,
-      px: 0,
-      py: 0,
-      size: Math.random() * 1.2 + 0.3,
-      bright: Math.random() * 0.6 + 0.4,
-    });
+    const particles: GlitterParticle[] = Array.from({ length: totalCount }, createParticle);
 
-    const stars: Star[] = Array.from({ length: count }, makestar);
+    const onMouseMove = (e: MouseEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      targetMouseX = (e.clientX - rect.left - rect.width / 2) * 0.04;
+      targetMouseY = (e.clientY - rect.top - rect.height / 2) * 0.04;
+    };
 
-    // ── Draw loop ──
-    const draw = () => {
-      ctx.fillStyle = "rgba(0,0,0,0)";
-      ctx.clearRect(0, 0, w, h);
+    window.addEventListener("mousemove", onMouseMove, { passive: true });
+    window.addEventListener("resize", resize);
 
-      const cx = w / 2;
-      const cy = h / 2;
+    let tick = 0;
 
-      for (const star of stars) {
-        // Save prev projected pos
-        const prevZ = star.z;
-        star.px = (star.x / prevZ) * w + cx;
-        star.py = (star.y / prevZ) * h + cy;
+    const render = () => {
+      tick++;
 
-        // Move toward viewer
-        star.z -= speed * 1.8;
+      // Lerp mouse offset for smooth parallax
+      mouseX += (targetMouseX - mouseX) * 0.05;
+      mouseY += (targetMouseY - mouseY) * 0.05;
 
-        if (star.z <= 0) {
-          Object.assign(star, makestar());
-          star.z = w;
-          continue;
+      ctx.clearRect(0, 0, width, height);
+
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+
+        // Update position
+        p.x += p.vx;
+        p.y += p.vy;
+
+        // Wrap around boundaries
+        if (p.x < -10) p.x = width + 10;
+        else if (p.x > width + 10) p.x = -10;
+
+        if (p.y < -10) p.y = height + 10;
+        else if (p.y > height + 10) p.y = -10;
+
+        // Twinkle factor
+        const twinkle = Math.sin(tick * p.twinkleSpeed + p.phase);
+        const currentAlpha = Math.max(0.05, Math.min(1, p.baseAlpha * (0.45 + 0.55 * twinkle)));
+
+        // Position with slight mouse parallax
+        const drawX = p.x + mouseX * (p.size * 0.4);
+        const drawY = p.y + mouseY * (p.size * 0.4);
+
+        // Draw soft glow halo for brighter particles
+        if (currentAlpha > 0.45) {
+          ctx.beginPath();
+          ctx.arc(drawX, drawY, p.size * 2.2, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255, 255, 255, ${currentAlpha * 0.18})`;
+          ctx.fill();
         }
 
-        const sx = (star.x / star.z) * w + cx;
-        const sy = (star.y / star.z) * h + cy;
-
-        // Out of bounds reset
-        if (sx < 0 || sx > w || sy < 0 || sy > h) {
-          Object.assign(star, makestar());
-          star.z = w;
-          continue;
-        }
-
-        // Size grows as star approaches
-        const size = Math.max(0.2, (1 - star.z / w) * star.size * 2.5);
-        const alpha = (1 - star.z / w) * star.bright;
-
-        // Streak from prev to current
+        // Draw center sparkle circle
         ctx.beginPath();
-        ctx.moveTo(star.px, star.py);
-        ctx.lineTo(sx, sy);
-        ctx.strokeStyle = `rgba(255,255,255,${Math.min(alpha, 0.9)})`;
-        ctx.lineWidth = size;
-        ctx.lineCap = "round";
-        ctx.stroke();
-
-        // Glow dot at tip
-        ctx.beginPath();
-        ctx.arc(sx, sy, size * 0.8, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255,255,255,${Math.min(alpha * 1.2, 1)})`;
+        ctx.arc(drawX, drawY, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = currentAlpha;
         ctx.fill();
+
+        // If diamond star and twinkling bright, draw 4-pointed starburst flare
+        if (p.isDiamond && currentAlpha > 0.4) {
+          const flare = p.size * 3.2 * (0.6 + 0.4 * twinkle);
+          ctx.strokeStyle = `rgba(255, 255, 255, ${currentAlpha * 0.75})`;
+          ctx.lineWidth = 0.75;
+          ctx.lineCap = "round";
+
+          // Horizontal spike
+          ctx.beginPath();
+          ctx.moveTo(drawX - flare, drawY);
+          ctx.lineTo(drawX + flare, drawY);
+          ctx.stroke();
+
+          // Vertical spike
+          ctx.beginPath();
+          ctx.moveTo(drawX, drawY - flare);
+          ctx.lineTo(drawX, drawY + flare);
+          ctx.stroke();
+        }
+
+        ctx.globalAlpha = 1;
       }
 
-      animId = requestAnimationFrame(draw);
+      animId = requestAnimationFrame(render);
     };
 
-    draw();
+    render();
 
     return () => {
       cancelAnimationFrame(animId);
-      ro.disconnect();
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("resize", resize);
     };
-  }, [count, speed]);
+  }, [totalCount, speed, colors]);
+
+  if (children) {
+    return (
+      <div ref={containerRef} className={`relative overflow-hidden ${className}`}>
+        <canvas
+          ref={canvasRef}
+          className="absolute inset-0 pointer-events-none z-0"
+          style={{ opacity }}
+          aria-hidden="true"
+        />
+        <div className="relative z-10">{children}</div>
+      </div>
+    );
+  }
 
   return (
     <canvas

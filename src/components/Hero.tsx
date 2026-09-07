@@ -74,11 +74,11 @@ export default function Hero({
       ref={sectionRef}
       className="relative w-full min-h-[100svh] pt-28 sm:pt-32 lg:pt-36 flex flex-col justify-between overflow-hidden bg-[#09090b] border-b border-white/[0.08]"
     >
-      {/* GlitterWrap — Starfield warp background */}
+      {/* GlitterWrap — Ambient sparkling particle background */}
       <GlitterWrap
-        count={200}
-        speed={0.5}
-        opacity={0.35}
+        particleCount={150}
+        speed={0.7}
+        opacity={0.85}
         className="absolute inset-0 w-full h-full pointer-events-none z-0"
       />
 
