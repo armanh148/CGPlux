@@ -3,7 +3,6 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { gsap } from "@/lib/gsap";
-import ColorBends from "./ColorBends";
 
 interface HeroProps {
   eyebrow?: string;
@@ -16,13 +15,13 @@ interface HeroProps {
 }
 
 export default function Hero({
-  eyebrow = "Atmospheric / Cinematic / Grid-Aligned",
-  title = "Crafting digital worlds",
-  titleStroke = "with precision",
-  subtitle = "CGplux Studios is a dark-mode system for creative studios: monospace metadata, sharp geometry, glass depth, and heavy interactions.",
-  projectsDelivered = "150+",
-  techStack = "Web • Mobile • AI",
-  successRate = "100%",
+  eyebrow = "Full-Cycle Digital Studio",
+  title = "CUSTOM CRM, DESIGN,",
+  titleStroke = "APP & WEB DEVELOPMENT",
+  subtitle = "We engineer high-performance web solutions, bespoke mobile apps, and scalable digital infrastructure. Business process optimization, rapid launch, and end-to-end technical support.",
+  projectsDelivered = "250+",
+  techStack = "Next.js • React • Node • Cloud",
+  successRate = "99.4%",
 }: HeroProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
   const textContainerRef = useRef<HTMLDivElement>(null);
@@ -32,131 +31,145 @@ export default function Hero({
       const tl = gsap.timeline({ defaults: { ease: "expo.out" } });
 
       tl.fromTo(
-        ".hero-eyebrow",
-        { y: 20, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1.5, delay: 0.2 }
-      );
-
-      const titleLines = gsap.utils.toArray(".hero-title-line > span");
-      tl.fromTo(
-        titleLines,
-        { y: "150%", opacity: 0, rotateZ: 3 },
-        { y: "0%", opacity: 1, rotateZ: 0, duration: 1.4, ease: "expo.out", stagger: 0.15 },
-        0.3
+        ".hero-badge",
+        { y: -20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1, stagger: 0.1, delay: 0.1 }
       );
 
       tl.fromTo(
-        ".hero-subtitle",
+        ".hero-headline-line",
+        { y: 60, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1.2, stagger: 0.15 },
+        "-=0.6"
+      );
+
+      tl.fromTo(
+        ".hero-desc",
         { y: 30, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1.5 },
-        0.8
+        { y: 0, opacity: 1, duration: 1 },
+        "-=0.6"
       );
 
       tl.fromTo(
-        ".hero-button",
+        ".hero-actions",
         { y: 20, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1, stagger: 0.1 },
-        1
+        { y: 0, opacity: 1, duration: 0.9 },
+        "-=0.6"
       );
 
-
-
-      gsap.to(textContainerRef.current, {
-        yPercent: 15,
-        opacity: 0,
-        ease: "none",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: true,
-        },
-      });
+      tl.fromTo(
+        ".hero-metric-item",
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, stagger: 0.1 },
+        "-=0.5"
+      );
     }, sectionRef);
 
     return () => ctx.revert();
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative w-full h-screen min-h-[800px] flex items-center overflow-hidden border-b border-white/[0.05]">
-      {/* Kinetic WebGL Background */}
-      <div className="absolute inset-0 z-0 overflow-hidden bg-black opacity-90 mix-blend-screen">
-        <ColorBends
-          colors={["#ff5c7a", "#8a5cff", "#00ffd1"]}
-          rotation={90}
-          speed={0.2}
-          scale={3.2}
-          frequency={3}
-          warpStrength={1}
-          mouseInfluence={0.85}
-          noise={0.15}
-          parallax={0.5}
-          iterations={1}
-          intensity={1.5}
-          bandWidth={6}
-          transparent={true}
-          autoRotate={0}
-        />
-      </div>
+    <section
+      ref={sectionRef}
+      className="relative w-full min-h-[100svh] pt-28 sm:pt-32 lg:pt-36 flex flex-col justify-between overflow-hidden bg-[#09090b] border-b border-white/[0.08]"
+    >
+      {/* Fine Architectural Grid & Subtle Radial Ambient */}
+      <div className="absolute inset-0 redstone-grid-lines opacity-40 pointer-events-none" />
+      <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-white/[0.02] rounded-full blur-[120px] pointer-events-none" />
 
-      <div ref={textContainerRef} className="relative z-10 w-full max-w-[1400px] mx-auto px-6 lg:px-12 pt-20 flex flex-col items-center justify-center text-center">
-        {/* Dark radial glow behind text to ensure perfect readability without altering the main WebGL background */}
-        <div className="absolute top-[45%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] max-w-[1000px] h-[600px] bg-black/80 blur-[120px] rounded-[100%] pointer-events-none -z-10"></div>
-        
-        {/* Eyebrow */}
-        <div className="hero-eyebrow flex items-center gap-4 mb-8 sm:mb-10">
-          <span className="w-8 sm:w-16 h-[1px] bg-brand-accent/40"></span>
-          <span className="font-mono text-[10px] sm:text-xs uppercase tracking-[0.3em] text-brand-accent/90">
-            {eyebrow.replace(/\//g, "•")}
-          </span>
-          <span className="w-8 sm:w-16 h-[1px] bg-brand-accent/40"></span>
+      {/* Main Container */}
+      <div className="relative z-10 w-full px-6 lg:px-12 pt-6 lg:pt-12 pb-16 flex-1 flex flex-col justify-center">
+        {/* Top Badges (Trust Proof) */}
+        <div className="flex flex-wrap items-center gap-3 mb-8">
+          <div className="hero-badge redstone-pill text-zinc-300">
+            <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
+            {eyebrow}
+          </div>
+          <div className="hero-badge redstone-pill text-zinc-400">
+            ★ 5.0 CLUTCH VERIFIED
+          </div>
+          <div className="hero-badge redstone-pill text-zinc-400 hidden sm:inline-flex">
+            AWWWARDS NOMINEE
+          </div>
         </div>
-        
-        {/* Main Title */}
-        <h1 className="m-0 font-heading font-medium tracking-tight text-[14vw] sm:text-[11vw] lg:text-[120px] leading-[0.85] flex flex-col items-center">
-          <div className="hero-title-line overflow-hidden pb-2">
-            <span className="inline-block text-white drop-shadow-lg">Crafting</span>
-          </div>
-          <div className="hero-title-line overflow-hidden flex items-center justify-center pb-2">
-            <span className="inline-block text-outline italic pr-4 sm:pr-8">Digital</span>
-          </div>
-          <div className="hero-title-line overflow-hidden pb-2">
-            <span className="inline-block text-white font-bold drop-shadow-lg">Worlds.</span>
-          </div>
-        </h1>
 
-        {/* Subtitle */}
-        <p className="hero-subtitle text-white/90 drop-shadow-lg text-sm sm:text-base leading-[1.8] font-light mt-10 mb-12 max-w-[500px] mx-auto">
-          {subtitle}
-        </p>
+        {/* Editorial Headline */}
+        <div ref={textContainerRef} className="max-w-6xl mb-8">
+          <h1 className="font-heading font-black tracking-tighter text-[44px] sm:text-[62px] md:text-[80px] lg:text-[92px] leading-[0.96] text-white uppercase">
+            <div className="hero-headline-line overflow-hidden">
+              <span className="block">{title}</span>
+            </div>
+            <div className="hero-headline-line overflow-hidden mt-1">
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-200 to-zinc-500">
+                {titleStroke}
+              </span>
+            </div>
+          </h1>
 
-        {/* CTA Buttons */}
-        <div className="flex items-center justify-center gap-4 sm:gap-6">
+          <p className="hero-desc mt-8 text-zinc-400 text-base sm:text-lg md:text-xl font-light leading-relaxed max-w-3xl">
+            {subtitle}
+          </p>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="hero-actions flex flex-wrap items-center gap-4 pt-2 mb-12">
           <Link
-            href="/projects"
-            className="hero-button group relative inline-flex items-center justify-center h-[54px] px-8 sm:px-10 rounded-full font-mono text-[10px] sm:text-xs uppercase tracking-[0.2em] bg-white overflow-hidden shadow-[0_0_40px_rgba(255,255,255,0.1)] hover:shadow-[0_0_40px_rgba(56,199,192,0.3)] transition-shadow duration-500"
+            href="/contact"
+            className="inline-flex items-center gap-3 px-8 py-4 bg-white hover:bg-zinc-200 text-black font-mono text-xs uppercase tracking-widest font-bold rounded-sm transition-all duration-300 shadow-lg shadow-white/5 group"
           >
-            <div className="absolute inset-0 bg-brand-accent transform scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500 ease-out" />
-            <span className="relative z-10 text-brand-dark group-hover:text-white transition-colors duration-500 font-bold">View Work</span>
+            <span className="text-black">Start a Project</span>
+            <span className="text-black transition-transform duration-300 group-hover:translate-x-1">
+              &rarr;
+            </span>
           </Link>
-          
-          <Link href="#about" className="hero-button w-[54px] h-[54px] rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white/10 hover:border-white/40 transition-all backdrop-blur-md">
-             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-70 group-hover:opacity-100 transition-opacity"><path d="m6 9 6 6 6-6"/></svg>
+
+          <Link
+            href="#portfolio"
+            className="inline-flex items-center gap-3 px-7 py-4 border border-zinc-800 hover:border-zinc-600 bg-zinc-900/50 hover:bg-zinc-850 text-zinc-200 font-mono text-xs uppercase tracking-widest font-medium rounded-sm transition-all duration-300"
+          >
+            <span>Explore Portfolio</span>
+            <span className="text-zinc-500">↓</span>
           </Link>
         </div>
       </div>
 
-      {/* Minimal Stats Bar at Bottom */}
-      <div className="absolute bottom-0 left-0 w-full border-t border-white/5 bg-black/20 backdrop-blur-xl hidden md:block">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-12 h-16 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.2em] text-white/40">
-          <div className="flex items-center gap-4">
-            <span className="w-1.5 h-1.5 rounded-full bg-brand-accent animate-pulse-dot"></span>
-            <span>Projects Delivered <span className="text-white ml-2">{projectsDelivered}</span></span>
+      {/* Redstone Signature Bottom Metrics Bar */}
+      <div className="relative z-10 w-full border-t border-white/[0.08] bg-[#0c0c0f]/80 backdrop-blur-md">
+        <div className="w-full px-6 lg:px-12 grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-white/[0.08]">
+          <div className="hero-metric-item py-5 sm:py-6 lg:py-7 pr-4 sm:pr-6">
+            <div className="text-xl sm:text-2xl lg:text-4xl font-black font-heading text-white tracking-tight">
+              {projectsDelivered}
+            </div>
+            <div className="text-[11px] font-mono uppercase tracking-widest text-zinc-400 mt-1">
+              Projects Launched
+            </div>
           </div>
-          <div className="flex items-center gap-12">
-            <span>Tech Stack <span className="text-white ml-2">{techStack}</span></span>
-            <span className="w-[1px] h-4 bg-white/10"></span>
-            <span>Success Rate <span className="text-white ml-2">{successRate}</span></span>
+
+          <div className="hero-metric-item py-5 sm:py-6 lg:py-7 px-4 sm:px-6">
+            <div className="text-xl sm:text-2xl lg:text-4xl font-black font-heading text-white tracking-tight">
+              {successRate}
+            </div>
+            <div className="text-[11px] font-mono uppercase tracking-widest text-zinc-400 mt-1">
+              Client Satisfaction
+            </div>
+          </div>
+
+          <div className="hero-metric-item py-5 sm:py-6 lg:py-7 px-4 sm:px-6">
+            <div className="text-xl sm:text-2xl lg:text-4xl font-black font-heading text-white tracking-tight">
+              25 - 70 d
+            </div>
+            <div className="text-[11px] font-mono uppercase tracking-widest text-zinc-400 mt-1">
+              Avg. Delivery Cycle
+            </div>
+          </div>
+
+          <div className="hero-metric-item py-5 sm:py-6 lg:py-7 pl-4 sm:pl-6">
+            <div className="text-xl sm:text-2xl lg:text-4xl font-black font-heading text-white tracking-tight">
+              24 / 7
+            </div>
+            <div className="text-[11px] font-mono uppercase tracking-widest text-zinc-400 mt-1">
+              Support & SLA Guarantee
+            </div>
           </div>
         </div>
       </div>

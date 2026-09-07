@@ -59,8 +59,8 @@ export default function AboutSection({ eyebrow, title, paragraphs, stat, statLab
   }, []);
 
   return (
-    <section ref={sectionRef} id="about" className="py-32 md:py-48 relative overflow-hidden bg-brand-dark">
-      <div className="w-full max-w-[1400px] mx-auto px-6 lg:px-12">
+    <section ref={sectionRef} id="about" className="py-20 md:py-32 lg:py-48 relative overflow-hidden bg-brand-dark">
+      <div className="w-full px-6 lg:px-12">
         
         <div ref={textRef} className="w-full">
           <div className="about-header mb-12 md:mb-16">
@@ -73,7 +73,7 @@ export default function AboutSection({ eyebrow, title, paragraphs, stat, statLab
             
             {/* Left Column: Big Headline */}
             <div className="lg:w-5/12">
-              <h2 className="about-paragraph font-heading font-medium tracking-tight text-[32px] md:text-[42px] xl:text-[48px] leading-[1.2] text-white">
+              <h2 className="about-paragraph font-heading font-medium tracking-tight text-[26px] sm:text-[32px] md:text-[42px] xl:text-[48px] leading-[1.2] text-white">
                 <span className="text-brand-accent">{title || "CGplux Studios"}</span> {displayParagraphs[0]}
               </h2>
             </div>

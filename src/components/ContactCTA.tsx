@@ -45,9 +45,9 @@ export default function ContactCTA({ ctaTitle, ctaSubtitle, ctaEmail }: ContactC
   return (
     <section ref={sectionRef} className="py-24 md:py-32 bg-brand-dark relative overflow-hidden">
       {/* Subtle background glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[1000px] h-[600px] bg-[radial-gradient(ellipse_at_center,rgba(56,199,192,0.08),transparent_70%)] pointer-events-none z-0" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[1000px] h-[600px] bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.03),transparent_70%)] pointer-events-none z-0" />
       
-      <div className="w-full max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10">
+      <div className="w-full px-6 lg:px-12 relative z-10">
         <div
           ref={contentRef}
           className="flex flex-col lg:flex-row lg:items-end justify-between gap-12 lg:gap-20 py-16 md:py-24 border-t border-b border-white/[0.05]"
@@ -58,7 +58,7 @@ export default function ContactCTA({ ctaTitle, ctaSubtitle, ctaEmail }: ContactC
               <span className="w-8 h-[1px] bg-brand-accent"></span>
               Contact
             </div>
-            <h3 className="font-heading font-medium text-[48px] md:text-[80px] leading-[1.1] tracking-tight text-white mb-6">
+            <h3 className="font-heading font-medium text-[32px] sm:text-[44px] md:text-[64px] lg:text-[80px] leading-[1.1] tracking-tight text-white mb-6">
               {ctaTitle || "Start a project."}
             </h3>
             <p className="m-0 text-white/50 text-lg md:text-xl leading-[1.6] max-w-[500px]">

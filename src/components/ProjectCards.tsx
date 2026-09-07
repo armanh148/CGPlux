@@ -1,10 +1,9 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { urlFor } from "@/lib/sanity";
-import { gsap } from "@/lib/gsap";
+import { urlFor } from "@/lib/data";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 interface Project {
@@ -20,143 +19,277 @@ interface ProjectCardsProps {
   projects: Project[];
 }
 
+const CATEGORIES = [
+  "All Projects",
+  "Web Development",
+  "Creative & Design",
+  "Real Estate",
+  "E-Commerce",
+  "Enterprise & CRM",
+];
+
+const fallbackProjects: Project[] = [
+  {
+    _id: "p1",
+    title: "Wishflowers Corporate Platform",
+    slug: { current: "wishflowers" },
+    categories: ["E-Commerce", "Web Development"],
+    excerpt: "Modern headless e-commerce experience with dynamic catalog filtering, real-time inventory synchronization, and custom checkout.",
+  },
+  {
+    _id: "p2",
+    title: "Socan Music Licensing System",
+    slug: { current: "socan" },
+    categories: ["Enterprise & CRM", "Web Development"],
+    excerpt: "Enterprise web portal for automated digital rights management, royalty calculations, and high-security client verification.",
+  },
+  {
+    _id: "p3",
+    title: "Validsoft Security Infrastructure",
+    slug: { current: "validsoft" },
+    categories: ["Creative & Design", "Web Development"],
+    excerpt: "High-conversion marketing presence and architectural redesign highlighting biometric authentication and enterprise fraud prevention.",
+  },
+  {
+    _id: "p4",
+    title: "Boston Prime Real Estate Engine",
+    slug: { current: "boston-prime" },
+    categories: ["Real Estate", "Web Development"],
+    excerpt: "Interactive MLS property search engine featuring automated map queries, virtual 3D tours, and lead routing CRM.",
+  },
+  {
+    _id: "p5",
+    title: "Steelfire Industrial Manufacturing",
+    slug: { current: "steelfire" },
+    categories: ["Enterprise & CRM", "Creative & Design"],
+    excerpt: "B2B catalog architecture and quote calculation system engineered for precision manufacturing and procurement teams.",
+  },
+  {
+    _id: "p6",
+    title: "Unilock Construction Hub",
+    slug: { current: "unilock" },
+    categories: ["Real Estate", "Creative & Design"],
+    excerpt: "Commercial paving and construction visualization platform with high-resolution material simulators and contractor directories.",
+  },
+];
+
 export default function ProjectCards({ projects }: ProjectCardsProps) {
-  const sectionRef = useRef<HTMLElement>(null);
-  const headerRef = useRef<HTMLDivElement>(null);
-  const cardsRef = useRef<HTMLDivElement>(null);
+  const [selectedCategory, setSelectedCategory] = useState("All Projects");
+  const [activeSlide, setActiveSlide] = useState(0);
+  const carouselRef = useRef<HTMLDivElement>(null);
+
+  const displayProjects = projects && projects.length > 0 ? projects : fallbackProjects;
+
+  const filteredProjects = displayProjects.filter((p) => {
+    if (selectedCategory === "All Projects") return true;
+    return p.categories?.some(
+      (cat) => cat.toLowerCase().includes(selectedCategory.toLowerCase()) ||
+               selectedCategory.toLowerCase().includes(cat.toLowerCase())
+    );
+  });
+
+  // Track active slide via scroll position
+  const handleCarouselScroll = useCallback(() => {
+    const el = carouselRef.current;
+    if (!el) return;
+    const scrollLeft = el.scrollLeft;
+    const cardWidth = el.scrollWidth / filteredProjects.length;
+    const idx = Math.round(scrollLeft / cardWidth);
+    setActiveSlide(Math.min(idx, filteredProjects.length - 1));
+  }, [filteredProjects.length]);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Header slide in
-      if (headerRef.current) {
-        gsap.fromTo(
-          headerRef.current.children,
-          { y: 60, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 1.2,
-            stagger: 0.2,
-            ease: "expo.out",
-            scrollTrigger: {
-              trigger: headerRef.current,
-              start: "top 80%",
-            },
-          }
-        );
-      }
+    const el = carouselRef.current;
+    if (!el) return;
+    el.addEventListener("scroll", handleCarouselScroll, { passive: true });
+    return () => el.removeEventListener("scroll", handleCarouselScroll);
+  }, [handleCarouselScroll]);
 
-      // Cards stagger in from bottom with scale
-      if (cardsRef.current) {
-        const cards = cardsRef.current.querySelectorAll(".project-card");
-        gsap.fromTo(
-          cards,
-          { y: 120, opacity: 0, scale: 0.95 },
-          {
-            y: 0,
-            opacity: 1,
-            scale: 1,
-            duration: 1.2,
-            stagger: 0.15,
-            ease: "expo.out",
-            scrollTrigger: {
-              trigger: cardsRef.current,
-              start: "top 80%",
-            },
-          }
-        );
-      }
-    }, sectionRef);
+  // Reset carousel position when filter changes
+  useEffect(() => {
+    setActiveSlide(0);
+    if (carouselRef.current) {
+      carouselRef.current.scrollTo({ left: 0, behavior: "instant" });
+    }
+  }, [selectedCategory]);
 
-    return () => ctx.revert();
-  }, []);
+  // Scroll to a specific slide on dot click
+  const scrollToSlide = (idx: number) => {
+    const el = carouselRef.current;
+    if (!el) return;
+    const cardWidth = el.scrollWidth / filteredProjects.length;
+    el.scrollTo({ left: cardWidth * idx, behavior: "smooth" });
+  };
 
-  const fallbackCards = [
-    { title: "Aether Studio", meta: "Brand / Web / Motion" },
-    { title: "Noir Systems", meta: "Design / UI / 3D" },
-    { title: "CGplux Lab", meta: "Prototype / Dev / QA" },
-  ];
+  const ProjectCard = ({ project, idx }: { project: Project; idx: number }) => {
+    const projectSlug = project.slug?.current || `project-${idx}`;
+    const projectCategories = project.categories || ["Web Development", "Design"];
 
-  return (
-    <section ref={sectionRef} className="py-32 relative">
-      <div ref={headerRef} className="w-full max-w-[1400px] mx-auto px-6 lg:px-12 flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
-        <div className="opacity-0">
-          <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-brand-accent mb-4">
-            Selected Works
+    return (
+      <div className="group redstone-card rounded-sm overflow-hidden flex flex-col justify-between">
+        {/* Visual Area */}
+        <div className="relative aspect-[16/10] w-full bg-zinc-900 overflow-hidden border-b border-white/[0.06]">
+          {project.image ? (
+            <Image
+              src={urlFor(project.image).width(800).height(500).url()}
+              alt={project.title}
+              fill
+              className="object-cover transition-transform duration-700 ease-out group-hover:scale-105 filter brightness-95 group-hover:brightness-105"
+            />
+          ) : (
+            <div className="w-full h-full flex flex-col items-center justify-center p-8 bg-gradient-to-br from-zinc-900 via-zinc-950 to-black">
+              <div className="font-mono text-xs text-zinc-400 uppercase tracking-widest mb-2">
+                Case Study // {String(idx + 1).padStart(2, "0")}
+              </div>
+              <div className="text-xl font-heading font-bold text-zinc-300 text-center uppercase tracking-tight">
+                {project.title}
+              </div>
+            </div>
+          )}
+          {/* Corner Index Stamp */}
+          <div className="absolute top-3 left-3 bg-black/80 backdrop-blur-md px-2.5 py-1 text-[10px] font-mono text-zinc-300 tracking-widest border border-white/10 uppercase">
+            {String(idx + 1).padStart(2, "0")}
           </div>
-          <h2 className="font-heading font-extrabold tracking-tighter text-[50px] md:text-[70px] leading-[1] text-white">
-            Featured Projects
-          </h2>
         </div>
-        <div className="opacity-0">
-          <Link href="/portfolio" className="magnetic inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-white/70 hover:text-white transition-colors">
-            View All <span className="text-xl leading-none">&rarr;</span>
-          </Link>
+
+        {/* Content Area */}
+        <div className="p-6 sm:p-7 flex-1 flex flex-col justify-between">
+          <div>
+            <div className="flex flex-wrap gap-2 mb-3">
+              {projectCategories.slice(0, 2).map((cat) => (
+                <span key={cat} className="text-[10px] font-mono uppercase tracking-widest text-zinc-400">
+                  #{cat}
+                </span>
+              ))}
+            </div>
+            <h3 className="font-heading font-bold text-xl sm:text-2xl text-white group-hover:text-zinc-200 transition-colors tracking-tight mb-3">
+              <Link href={`/portfolio/${projectSlug}`}>{project.title}</Link>
+            </h3>
+            {project.excerpt && (
+              <p className="text-zinc-400 text-xs sm:text-sm font-light leading-relaxed line-clamp-2 mb-6">
+                {project.excerpt}
+              </p>
+            )}
+          </div>
+          <div className="pt-4 border-t border-white/[0.06] flex items-center justify-between">
+            <span className="font-mono text-[10px] uppercase tracking-widest text-zinc-500">
+              Full Case Review
+            </span>
+            <Link
+              href={`/portfolio/${projectSlug}`}
+              className="inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-widest text-zinc-400 group-hover:text-white transition-colors"
+            >
+              <span>Explore</span>
+              <span className="text-white font-bold transition-transform duration-300 group-hover:translate-x-1">
+                &rarr;
+              </span>
+            </Link>
+          </div>
         </div>
       </div>
+    );
+  };
 
-      <div ref={cardsRef} className="w-full max-w-[1400px] mx-auto px-6 lg:px-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {projects.map((project) => (
-          <div
-            key={project._id}
-            className="project-card magnetic relative aspect-[3/4] rounded-xl border border-white/[0.08] bg-black overflow-hidden group cursor-default opacity-0"
-          >
-            <div className="absolute inset-0 transition-transform duration-[1.5s] ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-[1.05]">
-              {project.image ? (
-                <Image
-                  src={urlFor(project.image).width(800).height(1066).url()}
-                  alt={project.title}
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  className="object-cover transition-all duration-[1.5s] ease-[cubic-bezier(0.25,1,0.5,1)] filter grayscale-[0.8] brightness-[0.8] group-hover:grayscale-0 group-hover:brightness-100"
-                />
-              ) : (
-                <>
-                  <div className="absolute inset-0 bg-gradient-to-br from-slate-900/50 to-black" />
-                  <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(56,199,192,0.15),transparent_50%)] opacity-50 group-hover:opacity-100 transition-opacity duration-700" />
-                </>
-              )}
+  return (
+    <section id="portfolio" className="py-20 md:py-28 lg:py-36 bg-[#000000] relative border-b border-white/[0.08]">
+      <div className="w-full">
+        {/* Header — padded */}
+        <div className="px-6 lg:px-12">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10 md:mb-16 pb-4 border-b border-white/[0.08]">
+            {/* Left — label + title */}
+            <div className="flex-shrink-0">
+              <div className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.25em] text-zinc-400 mb-2">
+                <span className="w-6 h-[1.5px] bg-white" />
+                Featured Portfolio
+              </div>
+              <h2 className="font-heading font-black tracking-tight text-3xl sm:text-4xl md:text-5xl text-white uppercase leading-none">
+                Selected Cases
+              </h2>
             </div>
-            
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-90 group-hover:opacity-100 transition-opacity duration-700" />
-            
-            <div className="absolute left-0 right-0 bottom-0 p-8 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-[1s] ease-[cubic-bezier(0.25,1,0.5,1)] z-10">
-              <h3 className="font-heading font-extrabold tracking-tighter text-2xl md:text-3xl text-white mb-3 group-hover:text-brand-accent transition-colors duration-500">
-                {project.title}
-              </h3>
-              {project.categories && (
-                <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/60 opacity-0 group-hover:opacity-100 transition-opacity duration-[1s] delay-100">
-                  {project.categories.join(" / ")}
-                </div>
-              )}
+
+            {/* Right — tabs + archive link */}
+            <div className="flex flex-col items-end gap-3 min-w-0">
+              <Link
+                href="/portfolio"
+                className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-zinc-400 hover:text-white transition-colors flex-shrink-0"
+              >
+                <span>View Complete Archive (500+)</span>
+                <span className="text-white">&rarr;</span>
+              </Link>
+              {/* Category Tabs — scrollable */}
+              <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+                {CATEGORIES.map((cat) => {
+                  const isActive = selectedCategory === cat;
+                  return (
+                    <button
+                      key={cat}
+                      onClick={() => setSelectedCategory(cat)}
+                      className={`px-4 py-2 text-xs font-mono uppercase tracking-wider rounded-sm transition-all duration-200 cursor-pointer flex-shrink-0 ${
+                        isActive
+                          ? "bg-white text-black font-bold shadow-sm"
+                          : "bg-zinc-900/80 text-zinc-400 border border-zinc-800 hover:border-zinc-600 hover:text-white"
+                      }`}
+                    >
+                      {cat}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </div>
-        ))}
+        </div>
 
-        {/* Fallback cards */}
-        {projects.length === 0 &&
-          fallbackCards.map((item) => (
-            <div
-              key={item.title}
-              className="project-card magnetic relative aspect-[3/4] rounded-xl border border-white/[0.08] bg-black overflow-hidden group opacity-0"
-            >
-              <div className="absolute inset-0 transition-transform duration-[1.5s] ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-[1.05]">
-                <div className="absolute inset-0 bg-gradient-to-br from-slate-900/50 to-black" />
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(56,199,192,0.15),transparent_50%)] opacity-50 group-hover:opacity-100 transition-opacity duration-700" />
+        {/* ─── MOBILE: Scroll-Snap Carousel ─── */}
+        <div className="block md:hidden">
+          <div
+            ref={carouselRef}
+            className="flex overflow-x-auto scrollbar-hide gap-4 px-6 pb-2"
+            style={{ scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch" }}
+          >
+            {filteredProjects.map((project, idx) => (
+              <div
+                key={project._id || idx}
+                className="flex-shrink-0 w-[82vw] max-w-[340px]"
+                style={{ scrollSnapAlign: "start" }}
+              >
+                <ProjectCard project={project} idx={idx} />
               </div>
-              
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-90 group-hover:opacity-100 transition-opacity duration-700" />
-              
-              <div className="absolute left-0 right-0 bottom-0 p-8 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-[1s] ease-[cubic-bezier(0.25,1,0.5,1)] z-10">
-                <h3 className="font-heading font-extrabold tracking-tighter text-2xl md:text-3xl text-white mb-3 group-hover:text-brand-accent transition-colors duration-500">
-                  {item.title}
-                </h3>
-                <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/60 opacity-0 group-hover:opacity-100 transition-opacity duration-[1s] delay-100">
-                  {item.meta}
-                </div>
-              </div>
+            ))}
+            {/* Trailing spacer so last card has breathing room */}
+            <div className="flex-shrink-0 w-4" aria-hidden="true" />
+          </div>
+
+          {/* Dot indicators + counter */}
+          <div className="flex items-center justify-between px-6 mt-5">
+            {/* Dots */}
+            <div className="flex items-center gap-2">
+              {filteredProjects.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => scrollToSlide(idx)}
+                  aria-label={`Go to slide ${idx + 1}`}
+                  className={`rounded-sm transition-all duration-300 cursor-pointer ${
+                    idx === activeSlide
+                      ? "w-6 h-[3px] bg-white"
+                      : "w-[6px] h-[3px] bg-zinc-700 hover:bg-zinc-500"
+                  }`}
+                />
+              ))}
             </div>
+            {/* Slide counter */}
+            <span className="font-mono text-[10px] uppercase tracking-widest text-zinc-500">
+              {String(activeSlide + 1).padStart(2, "0")} /{" "}
+              {String(filteredProjects.length).padStart(2, "0")}
+            </span>
+          </div>
+        </div>
+
+        {/* ─── DESKTOP: Original 3-col Grid ─── */}
+        <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 px-6 lg:px-12">
+          {filteredProjects.map((project, idx) => (
+            <ProjectCard key={project._id || idx} project={project} idx={idx} />
           ))}
+        </div>
       </div>
     </section>
   );

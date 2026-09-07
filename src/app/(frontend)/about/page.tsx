@@ -3,7 +3,7 @@ import AboutSection from "@/components/AboutSection";
 import FounderSection from "@/components/FounderSection";
 import ClientsSection from "@/components/ClientsSection";
 import ContactCTA from "@/components/ContactCTA";
-import { getSiteSettings, getFounderProfile, getClients, getHomePage, getAboutPage } from "@/lib/sanity";
+import { getSiteSettings, getFounderProfile, getClients, getHomePage, getAboutPage } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "About Us | CGplux Studios",
@@ -24,26 +24,18 @@ export default async function AboutPage() {
 
   return (
     <>
-      <section className="pt-32 md:pt-48 pb-16 md:pb-24 relative overflow-hidden border-b border-white/[0.04]">
-        <div className="w-full max-w-[1400px] mx-auto px-6 lg:px-12 relative">
-          {/* Subtle Background Glow */}
-          <div className="absolute top-1/2 left-0 w-[40%] h-[150%] bg-brand-accent/5 blur-[120px] rounded-full pointer-events-none -translate-y-1/2 -z-10" />
-          
-          <div className="flex flex-col max-w-4xl">
-            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md w-fit mb-8">
-              <span className="w-2 h-2 rounded-full bg-brand-accent animate-pulse-dot" />
-              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/80">
-                {aboutPage?.eyebrow || "Who We Are"}
-              </span>
+      <section className="pt-32 md:pt-40 pb-16 md:pb-24 bg-[#000000] relative overflow-hidden border-b border-white/[0.08]">
+        <div className="absolute inset-0 redstone-grid-lines opacity-40 pointer-events-none" />
+        <div className="w-full px-6 lg:px-12 relative">
+          <div className="flex flex-col gap-8">
+            <div className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.25em] text-zinc-400">
+              <span className="w-6 h-[1.5px] bg-white" />
+              {aboutPage?.eyebrow || "Who We Are"}
             </div>
-            
-            <h1 className="m-0 font-heading font-bold tracking-tighter text-[56px] md:text-[80px] lg:text-[100px] leading-[0.95] text-white mb-8">
+            <h1 className="m-0 font-heading font-black tracking-tight text-4xl sm:text-5xl md:text-7xl leading-[0.95] text-white uppercase">
               {aboutPage?.title || "About CGplux Studios"}
             </h1>
-            
-            <div className="w-full h-[1px] bg-gradient-to-r from-white/10 to-transparent mb-8" />
-            
-            <p className="m-0 text-white/60 text-lg md:text-xl max-w-2xl leading-[1.6] font-light">
+            <p className="m-0 text-zinc-400 text-base sm:text-lg md:text-xl max-w-3xl leading-[1.7] font-light">
               We are a collective of visionaries and technologists, united by a singular mission to redefine the digital frontier and build experiences that endure.
             </p>
           </div>

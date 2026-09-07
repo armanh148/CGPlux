@@ -1,6 +1,6 @@
 "use client";
 
-import { urlFor } from "@/lib/sanity";
+import { urlFor } from "@/lib/data";
 
 interface ClientItem {
   _id: string;
@@ -90,7 +90,7 @@ export default function ClientsSection({ clients, partners }: ClientsSectionProp
 
       {/* Clients Marquee */}
       <div className="relative flex flex-col gap-6">
-        <div className="w-full max-w-[1400px] mx-auto px-6 lg:px-12 flex items-center justify-between z-20 pointer-events-none">
+        <div className="w-full px-6 lg:px-12 flex items-center justify-between z-20 pointer-events-none">
           <div className="font-mono text-xs uppercase tracking-[0.22em] text-brand-accent flex items-center gap-4">
             <span className="w-8 h-[1px] bg-brand-accent"></span>
             Trusted By
@@ -108,7 +108,7 @@ export default function ClientsSection({ clients, partners }: ClientsSectionProp
 
       {/* Partners Marquee */}
       <div className="relative flex flex-col gap-6">
-        <div className="w-full max-w-[1400px] mx-auto px-6 lg:px-12 flex items-center justify-end z-20 pointer-events-none">
+        <div className="w-full px-6 lg:px-12 flex items-center justify-end z-20 pointer-events-none">
           <div className="font-mono text-xs uppercase tracking-[0.22em] text-white/50 flex items-center gap-4">
             Collaborators
             <span className="w-8 h-[1px] bg-white/20"></span>

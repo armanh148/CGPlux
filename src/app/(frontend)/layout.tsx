@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import LenisScroller from "@/components/LenisScroller";
-import { getSiteSettings, urlFor } from "@/lib/sanity";
+import SmoothScroll from "@/components/SmoothScroll";
+import { getSiteSettings, urlFor } from "@/lib/data";
 import "../globals.css";
 
 const inter = Inter({
@@ -17,8 +17,8 @@ export async function generateMetadata(): Promise<Metadata> {
   const faviconUrl = settings?.favicon ? urlFor(settings.favicon).width(32).height(32).url() : undefined;
   
   return {
-    title: settings?.title || "CGplux Studios",
-    description: "Atmospheric, cinematic, and grid-aligned dark mode system for creative studios.",
+    title: settings?.title || "CGplux - Full-Cycle Web, Mobile & CRM Development Studio",
+    description: "Full-cycle digital engineering studio. Bespoke web development, enterprise CRM platforms, mobile applications, and high-conversion UI/UX design.",
     icons: faviconUrl ? { icon: faviconUrl } : undefined,
   };
 }
@@ -42,20 +42,21 @@ export default async function RootLayout({
         />
       </head>
       <body className="bg-[#000000]" suppressHydrationWarning>
-        <div className="noise-overlay" aria-hidden="true" />
-        <LenisScroller />
-        <div className="mx-auto w-full min-h-screen flex flex-col relative bg-brand-dark">
-          <div className="bg-grid absolute inset-0 z-0 pointer-events-none" aria-hidden="true" />
-          <Header logoUrl={logoUrl} />
-          <main id="top" className="relative z-10 flex-1">
-            {children}
-          </main>
-          <Footer
-            instagramUrl={settings?.instagramUrl}
-            behanceUrl={settings?.behanceUrl}
-            linkedinUrl={settings?.linkedinUrl}
-          />
-        </div>
+        <SmoothScroll>
+          <div className="noise-overlay" aria-hidden="true" />
+          <div className="mx-auto w-full min-h-screen flex flex-col relative bg-brand-dark">
+            <div className="bg-grid absolute inset-0 z-0 pointer-events-none" aria-hidden="true" />
+            <Header logoUrl={logoUrl} />
+            <main id="top" className="relative z-10 flex-1">
+              {children}
+            </main>
+            <Footer
+              instagramUrl={settings?.instagramUrl}
+              behanceUrl={settings?.behanceUrl}
+              linkedinUrl={settings?.linkedinUrl}
+            />
+          </div>
+        </SmoothScroll>
       </body>
     </html>
   );

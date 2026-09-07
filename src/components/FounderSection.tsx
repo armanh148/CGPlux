@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { gsap } from "@/lib/gsap";
-import { urlFor } from "@/lib/sanity";
+import { urlFor } from "@/lib/data";
 
 interface FounderProps {
   sectionEyebrow?: string;
@@ -70,7 +70,7 @@ export default function FounderSection({
 
   return (
     <section ref={ref} className="py-24 md:py-32 bg-brand-dark overflow-hidden">
-      <div className="w-full max-w-[1400px] mx-auto px-6 lg:px-12 flex flex-col items-center">
+      <div className="w-full px-6 lg:px-12 flex flex-col items-center">
         
         {/* Top Header Panel (Centered) */}
         <div className="founder-animate w-full flex flex-col items-center text-center mb-16 md:mb-24">
@@ -82,11 +82,11 @@ export default function FounderSection({
           
           {sectionTitle ? (
             <h2 
-              className="font-heading font-medium tracking-tight text-[48px] md:text-[64px] leading-[1.1] text-white whitespace-pre-line"
+              className="font-heading font-medium tracking-tight text-[32px] sm:text-[42px] md:text-[56px] lg:text-[64px] leading-[1.1] text-white whitespace-pre-line"
               dangerouslySetInnerHTML={{ __html: sectionTitle }}
             />
           ) : (
-            <h2 className="font-heading font-medium tracking-tight text-[48px] md:text-[64px] leading-[1.1] text-white">
+            <h2 className="font-heading font-medium tracking-tight text-[32px] sm:text-[42px] md:text-[56px] lg:text-[64px] leading-[1.1] text-white">
               The Minds Behind<br/>
               <span className="text-white/50 italic font-light">The Studio</span>
             </h2>

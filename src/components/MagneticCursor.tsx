@@ -7,10 +7,17 @@ export default function MagneticCursor() {
   const cursorRef = useRef<HTMLDivElement>(null);
   const followerRef = useRef<HTMLDivElement>(null);
   const [isHovering, setIsHovering] = useState(false);
+  const [isTouch, setIsTouch] = useState(true); // default true (SSR safe)
 
   useEffect(() => {
     const cursor = cursorRef.current;
     const follower = followerRef.current;
+    
+    // Detect if device has a fine pointer (mouse). If touch-only, skip.
+    const hasMouse = window.matchMedia("(pointer: fine)").matches;
+    setIsTouch(!hasMouse);
+    if (!hasMouse) return;
+    
     if (!cursor || !follower) return;
 
     // quickTo is highly optimized for mouse followers in GSAP 3
@@ -38,6 +45,8 @@ export default function MagneticCursor() {
       window.removeEventListener("mousemove", onMouseMove);
     };
   }, []);
+
+  if (isTouch) return null;
 
   return (
     <>

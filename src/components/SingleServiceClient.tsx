@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { PortableText } from "@portabletext/react";
-import { urlFor } from "@/lib/sanity";
+import { urlFor } from "@/lib/data";
 import { gsap } from "@/lib/gsap";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -67,8 +67,8 @@ export default function SingleServiceClient({ service }: { service: any }) {
   };
 
   return (
-    <section ref={containerRef} className="pt-[12rem] pb-24 md:pb-32 bg-brand-dark min-h-screen">
-      <div className="w-full max-w-[1400px] mx-auto px-6 lg:px-12 flex flex-col lg:flex-row gap-16 lg:gap-24">
+    <section ref={containerRef} className="pt-[6rem] sm:pt-[8rem] md:pt-[10rem] lg:pt-[12rem] pb-24 md:pb-32 bg-brand-dark min-h-screen">
+      <div className="w-full px-6 lg:px-12 flex flex-col lg:flex-row gap-16 lg:gap-24">
         
         {/* Left Column: Visuals */}
         <div className="lg:w-5/12 flex flex-col perspective-[1000px]">
@@ -128,7 +128,7 @@ export default function SingleServiceClient({ service }: { service: any }) {
             Service Detail
           </div>
           
-          <h1 className="animate-element font-heading font-medium tracking-tight text-[48px] md:text-[64px] leading-[1.1] text-white mb-8">
+          <h1 className="animate-element font-heading font-medium tracking-tight text-[32px] sm:text-[42px] md:text-[52px] lg:text-[64px] leading-[1.1] text-white mb-8">
             {service.title}
           </h1>
 
@@ -154,7 +154,7 @@ export default function SingleServiceClient({ service }: { service: any }) {
             ) : (
               <>
                 <p>
-                  This is a placeholder for the detailed service content. In Sanity, you can write rich text here including paragraphs, bullet lists, and subheadings to explain your process, tools, and outcomes for this specific service.
+                  This is a placeholder for the detailed service content. You can write rich text here including paragraphs, bullet lists, and subheadings to explain your process, tools, and outcomes for this specific service.
                 </p>
                 <p>
                   We focus on delivering high-quality, impactful results that align with your business goals. Our experienced team uses industry-standard pipelines and cutting-edge software to ensure every project is executed flawlessly from concept to final delivery.

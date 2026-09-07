@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getServiceBySlug } from "@/lib/sanity";
+import { getServiceBySlug } from "@/lib/data";
 import SingleServiceClient from "@/components/SingleServiceClient";
 
 export const metadata: Metadata = {
@@ -21,7 +21,7 @@ export default async function SingleServicePage(props: { params: Promise<{ slug:
   const params = await props.params;
   let service = await getServiceBySlug(params.slug).catch(() => null);
 
-  // If not found in Sanity, check the local fallback array (useful before Sanity is fully populated)
+  // Check local fallback data if needed
   if (!service) {
     const fallback = fallbackServices.find((s) => s.slug.current === params.slug);
     if (fallback) {

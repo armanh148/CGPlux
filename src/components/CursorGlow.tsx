@@ -1,12 +1,17 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "@/lib/gsap";
 
 export default function CursorGlow() {
   const glowRef = useRef<HTMLDivElement>(null);
+  const [isTouch, setIsTouch] = useState(true);
 
   useEffect(() => {
+    const hasMouse = window.matchMedia("(pointer: fine)").matches;
+    setIsTouch(!hasMouse);
+    if (!hasMouse) return;
+
     const glow = glowRef.current;
     if (!glow) return;
 
@@ -37,6 +42,8 @@ export default function CursorGlow() {
       document.removeEventListener("mouseleave", handleMouseLeave);
     };
   }, []);
+
+  if (isTouch) return null;
 
   return (
     <div

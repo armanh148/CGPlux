@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { urlFor } from "@/lib/sanity";
+import { urlFor } from "@/lib/data";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -99,8 +99,8 @@ export default function PortfolioGrid({ items }: PortfolioGridProps) {
           </h1>
         </div>
 
-        {/* Category filters */}
-        <div className="flex flex-wrap gap-2 mb-10 opacity-0">
+        {/* Category filters - scrollable on mobile */}
+        <div className="flex gap-2 mb-10 opacity-0 overflow-x-auto pb-1 scrollbar-hide">
           {categories.map((cat) => (
             <button
               key={cat.value}

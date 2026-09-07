@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { urlFor } from "@/lib/sanity";
+import { urlFor } from "@/lib/data";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 interface Service {

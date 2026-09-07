@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getBlogPost } from "@/lib/sanity";
+import { getBlogPost } from "@/lib/data";
 import SingleBlogClient from "@/components/SingleBlogClient";
 
 export const metadata: Metadata = {

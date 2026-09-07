@@ -82,7 +82,7 @@ export default function BlogPreview({ posts }: BlogPreviewProps) {
 
   return (
     <section ref={ref} className="py-24 md:py-32 bg-brand-dark">
-      <div className="w-full max-w-[1400px] mx-auto px-6 lg:px-12">
+      <div className="w-full px-6 lg:px-12">
         
         {/* Header */}
         <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-8 mb-16 md:mb-24">
@@ -91,7 +91,7 @@ export default function BlogPreview({ posts }: BlogPreviewProps) {
               <span className="w-8 h-[1px] bg-brand-accent"></span>
               From the Blog
             </div>
-            <h2 className="font-heading font-medium tracking-tight text-[48px] md:text-[64px] leading-[1.1] text-white">
+            <h2 className="font-heading font-medium tracking-tight text-[32px] sm:text-[42px] md:text-[56px] lg:text-[64px] leading-[1.1] text-white">
               Latest Insights.
             </h2>
           </div>
