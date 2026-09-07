@@ -209,12 +209,6 @@ export default function Footer({
         {/* Background */}
         <div className="absolute inset-0 bg-[#09090b]" />
 
-        {/* Top bar: copyright only */}
-        <div className="relative z-10 flex items-center justify-center px-6 pt-6">
-          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/25">
-            &copy; {new Date().getFullYear()} CGPLUX Digital Studio &mdash; All Rights Reserved
-          </span>
-        </div>
 
         {/* Giant watermark text */}
         <div
