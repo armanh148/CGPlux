@@ -1,6 +1,8 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { urlFor } from "@/lib/data";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 
 interface ClientItem {
   _id: string;
@@ -29,6 +31,22 @@ const fallbackPartners = [
 export default function ClientsSection({ clients, partners }: ClientsSectionProps) {
   const displayClients = clients && clients.length > 0 ? clients : fallbackClients;
   const displayPartners = partners && partners.length > 0 ? partners : fallbackPartners;
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // ── Scroll animation ──
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        ".cs-header",
+        { y: 30, opacity: 0 },
+        {
+          y: 0, opacity: 1, duration: 1, stagger: 0.2, ease: "power3.out",
+          scrollTrigger: { trigger: sectionRef.current, start: "top 85%", toggleActions: "play none none none" },
+        }
+      );
+    }, sectionRef);
+    return () => { ctx.revert(); ScrollTrigger.getAll().forEach(st => st.refresh()); };
+  }, []);
 
   // Duplicate items to ensure smooth infinite scroll
   // We duplicate enough times so the marquee always fills ultra-wide screens seamlessly
@@ -63,7 +81,7 @@ export default function ClientsSection({ clients, partners }: ClientsSectionProp
   };
 
   return (
-    <section className="py-24 md:py-32 bg-brand-dark border-y border-white/[0.02] overflow-hidden relative flex flex-col gap-20">
+    <section ref={sectionRef} className="py-24 md:py-32 bg-brand-dark border-y border-white/[0.02] overflow-hidden relative flex flex-col gap-20">
       <style dangerouslySetInnerHTML={{__html: `
         @keyframes marquee-left {
           0% { transform: translateX(0); }
@@ -90,7 +108,7 @@ export default function ClientsSection({ clients, partners }: ClientsSectionProp
 
       {/* Clients Marquee */}
       <div className="relative flex flex-col gap-6">
-        <div className="w-full px-6 lg:px-12 flex items-center justify-between z-20 pointer-events-none">
+        <div className="cs-header w-full px-6 lg:px-12 flex items-center justify-between z-20 pointer-events-none">
           <div className="font-mono text-xs uppercase tracking-[0.22em] text-brand-accent flex items-center gap-4">
             <span className="w-8 h-[1px] bg-brand-accent"></span>
             Trusted By
@@ -108,7 +126,7 @@ export default function ClientsSection({ clients, partners }: ClientsSectionProp
 
       {/* Partners Marquee */}
       <div className="relative flex flex-col gap-6">
-        <div className="w-full px-6 lg:px-12 flex items-center justify-end z-20 pointer-events-none">
+        <div className="cs-header w-full px-6 lg:px-12 flex items-center justify-end z-20 pointer-events-none">
           <div className="font-mono text-xs uppercase tracking-[0.22em] text-white/50 flex items-center gap-4">
             Collaborators
             <span className="w-8 h-[1px] bg-white/20"></span>

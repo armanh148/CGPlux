@@ -4,6 +4,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { urlFor } from "@/lib/data";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 interface Project {
@@ -77,8 +78,34 @@ export default function ProjectCards({ projects }: ProjectCardsProps) {
   const [selectedCategory, setSelectedCategory] = useState("All Projects");
   const [activeSlide, setActiveSlide] = useState(0);
   const carouselRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
 
   const displayProjects = projects && projects.length > 0 ? projects : fallbackProjects;
+
+  // ── Scroll animations ──
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Header slide-up
+      gsap.fromTo(
+        ".pc-header",
+        { y: 40, opacity: 0 },
+        {
+          y: 0, opacity: 1, duration: 1, ease: "expo.out",
+          scrollTrigger: { trigger: sectionRef.current, start: "top 80%", toggleActions: "play none none none" },
+        }
+      );
+      // Desktop grid cards — stagger up
+      gsap.fromTo(
+        ".pc-card",
+        { y: 60, opacity: 0 },
+        {
+          y: 0, opacity: 1, duration: 0.9, stagger: 0.13, ease: "power3.out",
+          scrollTrigger: { trigger: ".pc-grid", start: "top 82%", toggleActions: "play none none none" },
+        }
+      );
+    }, sectionRef);
+    return () => { ctx.revert(); ScrollTrigger.getAll().forEach(st => st.refresh()); };
+  }, []);
 
   const filteredProjects = displayProjects.filter((p) => {
     if (selectedCategory === "All Projects") return true;
@@ -191,11 +218,11 @@ export default function ProjectCards({ projects }: ProjectCardsProps) {
   };
 
   return (
-    <section id="portfolio" className="py-20 md:py-28 lg:py-36 bg-[#000000] relative border-b border-white/[0.08]">
+    <section ref={sectionRef} id="portfolio" className="py-20 md:py-28 lg:py-36 bg-[#000000] relative border-b border-white/[0.08]">
       <div className="w-full">
         {/* Header — padded */}
         <div className="px-6 lg:px-12">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10 md:mb-16 pb-4 border-b border-white/[0.08]">
+          <div className="pc-header flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10 md:mb-16 pb-4 border-b border-white/[0.08]">
             {/* Left — label + title */}
             <div className="flex-shrink-0">
               <div className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.25em] text-zinc-400 mb-2">
@@ -285,9 +312,11 @@ export default function ProjectCards({ projects }: ProjectCardsProps) {
         </div>
 
         {/* ─── DESKTOP: Original 3-col Grid ─── */}
-        <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 px-6 lg:px-12">
+        <div className="pc-grid hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 px-6 lg:px-12">
           {filteredProjects.map((project, idx) => (
-            <ProjectCard key={project._id || idx} project={project} idx={idx} />
+            <div key={project._id || idx} className="pc-card">
+              <ProjectCard project={project} idx={idx} />
+            </div>
           ))}
         </div>
       </div>

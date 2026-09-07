@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 
 interface Step {
   num: string;
@@ -50,6 +51,30 @@ export default function ProcessSection() {
   const [activeStep, setActiveStep] = useState(0);
   const [activeSlide, setActiveSlide] = useState(0);
   const carouselRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // ── Scroll animations ──
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        ".proc-header",
+        { y: 40, opacity: 0 },
+        {
+          y: 0, opacity: 1, duration: 1, ease: "expo.out",
+          scrollTrigger: { trigger: sectionRef.current, start: "top 80%", toggleActions: "play none none none" },
+        }
+      );
+      gsap.fromTo(
+        ".proc-card",
+        { y: 50, opacity: 0, scale: 0.97 },
+        {
+          y: 0, opacity: 1, scale: 1, duration: 0.8, stagger: 0.1, ease: "power3.out",
+          scrollTrigger: { trigger: ".proc-grid", start: "top 82%", toggleActions: "play none none none" },
+        }
+      );
+    }, sectionRef);
+    return () => { ctx.revert(); ScrollTrigger.getAll().forEach(st => st.refresh()); };
+  }, []);
 
   const handleCarouselScroll = useCallback(() => {
     const el = carouselRef.current;
@@ -76,11 +101,11 @@ export default function ProcessSection() {
   };
 
   return (
-    <section id="process" className="py-20 md:py-28 lg:py-36 bg-[#000000] relative border-b border-white/[0.08]">
+    <section ref={sectionRef} id="process" className="py-20 md:py-28 lg:py-36 bg-[#000000] relative border-b border-white/[0.08]">
       <div className="w-full">
 
         {/* Header */}
-        <div className="px-6 lg:px-12">
+        <div className="proc-header px-6 lg:px-12">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-10 md:pb-12 border-b border-white/[0.08]">
             <div>
               <div className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.25em] text-zinc-400 mb-3">
@@ -152,15 +177,16 @@ export default function ProcessSection() {
         </div>
 
         {/* ── DESKTOP: 4-col interactive grid ── */}
-        <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-4 gap-6 px-6 lg:px-12 pt-12">
+        <div className="proc-grid hidden md:grid md:grid-cols-2 lg:grid-cols-4 gap-6 px-6 lg:px-12 pt-12">
           {STEPS.map((step, idx) => (
-            <StepCard
-              key={step.num}
-              step={step}
-              idx={idx}
-              isActive={activeStep === idx}
-              onClick={() => setActiveStep(idx)}
-            />
+            <div key={step.num} className="proc-card">
+              <StepCard
+                step={step}
+                idx={idx}
+                isActive={activeStep === idx}
+                onClick={() => setActiveStep(idx)}
+              />
+            </div>
           ))}
         </div>
 

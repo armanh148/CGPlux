@@ -218,12 +218,6 @@ a {
 .redstone-card {
   background: #09090b;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.redstone-card:hover {
-  border-color: rgba(255, 255, 255, 0.3);
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.9);
 }
 
 .redstone-num {
@@ -246,4 +240,67 @@ a {
 /* Prevent filter pills from shrinking on mobile */
 .scrollbar-hide > * {
   flex-shrink: 0;
+}
+
+/* ── Global hover utilities ─────────────────────────────────────── */
+
+/* Card lift: any .redstone-card gets subtle lift + glow on hover */
+.redstone-card {
+  transition: border-color 0.35s ease, transform 0.35s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.35s ease;
+}
+.redstone-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255,255,255,0.22);
+  box-shadow: 0 20px 48px -12px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.06);
+}
+
+/* Button fill sweep — add class .btn-sweep to any button/link */
+.btn-sweep {
+  position: relative;
+  overflow: hidden;
+}
+.btn-sweep::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.06);
+  transform: translateX(-101%);
+  transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+}
+.btn-sweep:hover::after {
+  transform: translateX(0);
+}
+
+/* Underline reveal — add .link-reveal to text links */
+.link-reveal {
+  position: relative;
+}
+.link-reveal::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: currentColor;
+  transition: width 0.4s cubic-bezier(0.4,0,0.2,1);
+}
+.link-reveal:hover::after {
+  width: 100%;
+}
+
+/* Tag chip hover */
+.tag-chip {
+  transition: border-color 0.25s ease, color 0.25s ease, background-color 0.25s ease;
+}
+.tag-chip:hover {
+  border-color: rgba(255,255,255,0.4) !important;
+  color: #fff !important;
+  background-color: rgba(255,255,255,0.06) !important;
+}
+
+/* Section fade-up initial state (for components without GSAP) */
+[data-animate] {
+  opacity: 0;
+  transform: translateY(32px);
 }

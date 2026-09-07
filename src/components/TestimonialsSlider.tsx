@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import { urlFor } from "@/lib/data";
-import { gsap } from "@/lib/gsap";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 interface Testimonial {
@@ -50,6 +50,30 @@ export default function TestimonialsSlider({ testimonials }: TestimonialsSliderP
   const items: Testimonial[] = testimonials && testimonials.length > 0 ? testimonials : fallbackReviews;
   const [activeIdx, setActiveIdx] = useState(0);
   const quoteRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // ── Scroll animations ──
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        ".ts-header",
+        { y: 40, opacity: 0 },
+        {
+          y: 0, opacity: 1, duration: 1, ease: "expo.out",
+          scrollTrigger: { trigger: sectionRef.current, start: "top 80%", toggleActions: "play none none none" },
+        }
+      );
+      gsap.fromTo(
+        ".ts-card",
+        { y: 50, opacity: 0 },
+        {
+          y: 0, opacity: 1, duration: 1, ease: "power3.out",
+          scrollTrigger: { trigger: ".ts-card", start: "top 88%", toggleActions: "play none none none" },
+        }
+      );
+    }, sectionRef);
+    return () => { ctx.revert(); ScrollTrigger.getAll().forEach(st => st.refresh()); };
+  }, []);
 
   const animateQuote = useCallback(
     (newIdx: number) => {
@@ -81,10 +105,10 @@ export default function TestimonialsSlider({ testimonials }: TestimonialsSliderP
   }, [activeIdx, animateQuote, items.length]);
 
   return (
-    <section id="reviews" className="py-20 md:py-28 lg:py-36 bg-[#000000] relative border-b border-white/[0.08]">
+    <section ref={sectionRef} id="reviews" className="py-20 md:py-28 lg:py-36 bg-[#000000] relative border-b border-white/[0.08]">
       <div className="w-full px-6 lg:px-12">
-        {/* Header (Join The Best / Reviews) */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-12 border-b border-white/[0.08]">
+        {/* Header */}
+        <div className="ts-header flex flex-col md:flex-row md:items-end justify-between gap-6 pb-12 border-b border-white/[0.08]">
           <div>
             <div className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.25em] text-zinc-400 mb-3">
               <span className="w-6 h-[1.5px] bg-white" />
@@ -113,7 +137,7 @@ export default function TestimonialsSlider({ testimonials }: TestimonialsSliderP
 
         {/* Featured Quote Showcase */}
         <div className="pt-12">
-          <div className="redstone-card p-8 sm:p-12 md:p-16 rounded-sm relative overflow-hidden">
+          <div className="ts-card redstone-card p-8 sm:p-12 md:p-16 rounded-sm relative overflow-hidden">
             <div className="text-white/5 font-serif text-[120px] sm:text-[180px] absolute -top-10 right-8 select-none pointer-events-none leading-none">
               &ldquo;
             </div>
