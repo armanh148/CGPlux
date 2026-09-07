@@ -203,44 +203,17 @@ export default function Footer({
 
       </div>
 
-      {/* ── CGPLUX Signature Footer Strip (medtech-style) ── */}
+      {/* ── CGPLUX Signature Footer Strip ── */}
       <div className="relative w-full overflow-hidden select-none" style={{ height: "clamp(120px, 18vw, 260px)" }}>
 
-        {/* Gradient background */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background: "linear-gradient(135deg, #0a0a0f 0%, #111118 40%, #0d0d14 70%, #080810 100%)",
-          }}
-        />
+        {/* Background */}
+        <div className="absolute inset-0 bg-[#09090b]" />
 
-        {/* Subtle radial glow — center */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background: "radial-gradient(ellipse 80% 60% at 50% 100%, rgba(255,255,255,0.04) 0%, transparent 70%)",
-          }}
-        />
-
-        {/* Top bar: copyright + links */}
-        <div className="relative z-10 flex items-center justify-between px-6 lg:px-10 pt-5 pb-0">
-          <a
-            href="/terms"
-            className="font-mono text-[11px] uppercase tracking-widest text-white/40 hover:text-white/70 transition-colors duration-300"
-          >
-            Terms &amp; Conditions
-          </a>
-
-          <span className="font-mono text-[11px] uppercase tracking-widest text-white/40">
-            &copy; {new Date().getFullYear()} CGPLUX. All Rights Reserved.
+        {/* Top bar: copyright only */}
+        <div className="relative z-10 flex items-center justify-center px-6 pt-6">
+          <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/25">
+            &copy; {new Date().getFullYear()} CGPLUX Digital Studio &mdash; All Rights Reserved
           </span>
-
-          <a
-            href="/privacy"
-            className="font-mono text-[11px] uppercase tracking-widest text-white/40 hover:text-white/70 transition-colors duration-300"
-          >
-            Privacy Policy
-          </a>
         </div>
 
         {/* Giant watermark text */}
@@ -250,8 +223,8 @@ export default function Footer({
             fontSize: "clamp(90px, 22vw, 420px)",
             letterSpacing: "-0.035em",
             color: "transparent",
-            WebkitTextStroke: "1px rgba(255,255,255,0.10)",
-            backgroundImage: "linear-gradient(180deg, rgba(255,255,255,0.13) 0%, rgba(255,255,255,0.04) 100%)",
+            WebkitTextStroke: "1px rgba(255,255,255,0.07)",
+            backgroundImage: "linear-gradient(180deg, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0.02) 100%)",
             WebkitBackgroundClip: "text",
             backgroundClip: "text",
             transform: "translateY(18%)",
@@ -261,5 +234,6 @@ export default function Footer({
         </div>
       </div>
     </footer>
+
   );
 }
