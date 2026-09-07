@@ -204,7 +204,7 @@ export default function Footer({
       </div>
 
       {/* ── CGPLUX Signature Footer Strip ── */}
-      <div className="relative w-full flex items-center justify-center overflow-hidden py-6 sm:py-8 md:py-12 select-none bg-[#09090b] border-t border-white/[0.06]">
+      <div className="relative w-full flex items-end justify-center overflow-hidden pt-4 sm:pt-6 md:pt-8 pb-0 select-none bg-[#09090b] border-t border-white/[0.06]">
         <div
           className="w-full font-heading font-black tracking-tighter text-center leading-none pointer-events-none whitespace-nowrap select-none"
           style={{
@@ -215,6 +215,7 @@ export default function Footer({
             backgroundImage: "linear-gradient(180deg, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0.08) 100%)",
             WebkitBackgroundClip: "text",
             backgroundClip: "text",
+            marginBottom: "-4.5vw",
           }}
         >
           CGPLUX
