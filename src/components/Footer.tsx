@@ -204,24 +204,17 @@ export default function Footer({
       </div>
 
       {/* ── CGPLUX Signature Footer Strip ── */}
-      <div className="relative w-full overflow-hidden select-none" style={{ height: "clamp(120px, 18vw, 260px)" }}>
-
-        {/* Background */}
-        <div className="absolute inset-0 bg-[#09090b]" />
-
-
-        {/* Giant watermark text */}
+      <div className="relative w-full flex items-center justify-center overflow-hidden py-10 md:py-16 select-none bg-[#09090b] border-t border-white/[0.06]">
         <div
-          className="absolute bottom-0 left-0 w-full text-center font-heading font-black leading-none pointer-events-none"
+          className="w-full font-heading font-black tracking-tight text-center leading-none pointer-events-none px-4"
           style={{
-            fontSize: "clamp(90px, 22vw, 420px)",
-            letterSpacing: "-0.035em",
+            fontSize: "clamp(48px, 14vw, 220px)",
+            letterSpacing: "-0.02em",
             color: "transparent",
-            WebkitTextStroke: "1px rgba(255,255,255,0.07)",
-            backgroundImage: "linear-gradient(180deg, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0.02) 100%)",
+            WebkitTextStroke: "1.5px rgba(255, 255, 255, 0.25)",
+            backgroundImage: "linear-gradient(180deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0.08) 100%)",
             WebkitBackgroundClip: "text",
             backgroundClip: "text",
-            transform: "translateY(18%)",
           }}
         >
           CGPLUX
