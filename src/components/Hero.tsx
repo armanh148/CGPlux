@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { gsap } from "@/lib/gsap";
+import GlitterWrap from "@/components/GlitterWrap";
 
 interface HeroProps {
   eyebrow?: string;
@@ -73,9 +74,17 @@ export default function Hero({
       ref={sectionRef}
       className="relative w-full min-h-[100svh] pt-28 sm:pt-32 lg:pt-36 flex flex-col justify-between overflow-hidden bg-[#09090b] border-b border-white/[0.08]"
     >
+      {/* GlitterWrap — Starfield warp background */}
+      <GlitterWrap
+        count={200}
+        speed={0.5}
+        opacity={0.35}
+        className="absolute inset-0 w-full h-full pointer-events-none z-0"
+      />
+
       {/* Fine Architectural Grid & Subtle Radial Ambient */}
-      <div className="absolute inset-0 redstone-grid-lines opacity-40 pointer-events-none" />
-      <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-white/[0.02] rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute inset-0 redstone-grid-lines opacity-20 pointer-events-none z-[1]" />
+      <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-white/[0.02] rounded-full blur-[120px] pointer-events-none z-[1]" />
 
       {/* Main Container */}
       <div className="relative z-10 w-full px-6 lg:px-12 pt-6 lg:pt-12 pb-16 flex-1 flex flex-col justify-center">
