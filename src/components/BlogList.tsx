@@ -21,6 +21,7 @@ interface BlogListProps {
   title?: string;
   subtitle?: string;
   showLearnMore?: boolean;
+  showAll?: boolean;
 }
 
 const fallbackPosts: BlogPost[] = [
@@ -115,6 +116,7 @@ export default function BlogList({
   title,
   subtitle,
   showLearnMore = true,
+  showAll = false,
 }: BlogListProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentPage, setCurrentPage] = useState(0);
@@ -123,10 +125,9 @@ export default function BlogList({
   const itemsPerPage = 3;
   const totalPages = Math.ceil(allItems.length / itemsPerPage);
 
-  const currentPosts = allItems.slice(
-    currentPage * itemsPerPage,
-    (currentPage + 1) * itemsPerPage
-  );
+  const currentPosts = showAll
+    ? allItems
+    : allItems.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -149,7 +150,7 @@ export default function BlogList({
   }, [currentPage]);
 
   return (
-    <section className="w-full py-16 sm:py-24 bg-[#08080C] text-white relative rounded-[32px] sm:rounded-[40px] p-6 sm:p-10 lg:p-14 border border-white/10 shadow-2xl overflow-hidden">
+    <section className="w-full py-16 sm:py-24 bg-[#08080C] text-white relative px-6 lg:px-12 xl:px-16 overflow-hidden border-t border-b border-white/10">
       {/* Top Header matching reference image */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 sm:mb-16">
         <div className="flex flex-col items-start gap-3 max-w-2xl">

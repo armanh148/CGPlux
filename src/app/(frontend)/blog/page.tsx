@@ -4,7 +4,7 @@ import { getBlogPosts, getBlogPage } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Blog & Insights | CGplux Studios",
-  description: "Explore our latest updates on tax-saving strategies, economic insights, 3D CGI workflows, and digital engineering trends.",
+  description: "Explore our latest updates on design thinking, digital innovation, 3D CGI workflows, and technical insights.",
 };
 
 export default async function BlogPage() {
@@ -14,16 +14,14 @@ export default async function BlogPage() {
   ]);
 
   return (
-    <div className="pt-28 md:pt-36 pb-20 md:pb-32 bg-black relative min-h-screen">
-      <div className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10">
-        <BlogList
-          posts={posts}
-          title={blogPage?.title}
-          subtitle={blogPage?.subtitle}
-          eyebrow={blogPage?.eyebrow}
-          showViewAll={false}
-        />
-      </div>
+    <div className="pt-24 md:pt-32 pb-20 md:pb-32 bg-[#08080C] relative min-h-screen w-full">
+      <BlogList
+        posts={posts}
+        title={blogPage?.title}
+        subtitle={blogPage?.subtitle}
+        showLearnMore={false}
+        showAll={true}
+      />
     </div>
   );
 }

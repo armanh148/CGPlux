@@ -18,10 +18,8 @@ interface BlogPreviewProps {
 
 export default function BlogPreview({ posts }: BlogPreviewProps) {
   return (
-    <div className="py-20 md:py-32 bg-black">
-      <div className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10">
-        <BlogList posts={posts} showViewAll={true} />
-      </div>
+    <div className="py-12 md:py-20 bg-[#08080C] w-full">
+      <BlogList posts={posts} showLearnMore={true} />
     </div>
   );
 }
