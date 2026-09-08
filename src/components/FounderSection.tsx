@@ -265,55 +265,7 @@ export default function FounderSection({
                 />
               </div>
 
-              {/* Left Cutout Scoop / Notched Column with Avatar Switchers & Arrow */}
-              <div className="absolute left-0 bottom-6 sm:bottom-8 z-30 flex flex-col items-center gap-3 p-3 bg-[#F9F7F2] rounded-r-3xl shadow-lg border-y border-r border-black/5">
-                {/* Avatar Switcher 1 (CEO) */}
-                <button
-                  type="button"
-                  onClick={() => setActiveLeaderIndex(0)}
-                  className={`w-11 h-11 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 transition-all duration-300 cursor-pointer ${
-                    activeLeaderIndex === 0
-                      ? "border-black scale-105 shadow-md"
-                      : "border-transparent opacity-60 hover:opacity-100"
-                  }`}
-                  title="Ali Murtaza - CEO"
-                >
-                  <img
-                    src={leaders[0].photo}
-                    alt="Ali Murtaza"
-                    className="w-full h-full object-cover grayscale"
-                  />
-                </button>
 
-                {/* Avatar Switcher 2 (Co-Founder) */}
-                <button
-                  type="button"
-                  onClick={() => setActiveLeaderIndex(1)}
-                  className={`w-11 h-11 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 transition-all duration-300 cursor-pointer ${
-                    activeLeaderIndex === 1
-                      ? "border-black scale-105 shadow-md"
-                      : "border-transparent opacity-60 hover:opacity-100"
-                  }`}
-                  title="Haseeb Haider - Co-Founder"
-                >
-                  <img
-                    src={leaders[1].photo}
-                    alt="Haseeb Haider"
-                    className="w-full h-full object-cover grayscale"
-                  />
-                </button>
-
-                {/* Bottom Action Button (Black Circle Arrow ↗ matching screenshot) */}
-                <a
-                  href="/contact"
-                  className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-black text-white flex items-center justify-center hover:scale-110 transition-transform duration-300 shadow-md mt-1"
-                  title="Contact Leadership"
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M17 7H7M17 7V17" />
-                  </svg>
-                </a>
-              </div>
 
               {/* Leader Role Badge at Bottom Right of Yellow Card */}
               <div className="relative z-20 p-6 sm:p-8 flex justify-end">
