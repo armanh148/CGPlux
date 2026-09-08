@@ -17,309 +17,599 @@ interface Project {
 }
 
 interface ProjectCardsProps {
-  projects: Project[];
+  projects?: Project[];
 }
 
-const CATEGORIES = [
-  "All Projects",
-  "Web Development",
-  "Creative & Design",
-  "Real Estate",
-  "E-Commerce",
-  "Enterprise & CRM",
-];
+interface CardItemData {
+  id: string;
+  title: string;
+  client: string;
+  tagline: string;
+  category: string;
+  bgColor: string;
+  textColor: string;
+  slug: string;
+  type: "laptop-angled" | "laptop-hand" | "laptop-stone" | "phone" | "laptop-saas";
+  screenTitle?: string;
+  screenSubtitle?: string;
+}
 
-const fallbackProjects: Project[] = [
+const PORTFOLIO_ITEMS: CardItemData[] = [
   {
-    _id: "p1",
-    title: "Wishflowers Corporate Platform",
-    slug: { current: "wishflowers" },
-    categories: ["E-Commerce", "Web Development"],
-    excerpt: "Modern headless e-commerce experience with dynamic catalog filtering, real-time inventory synchronization, and custom checkout.",
+    id: "p1",
+    title: "Vince Skincare E-Commerce Platform",
+    client: "Vince Laboratories",
+    tagline: "Headless e-commerce & high-conversion beauty store",
+    category: "E-Commerce",
+    bgColor: "bg-[#3b82f6]", // Vivid Blue
+    textColor: "text-white",
+    slug: "vince-skincare",
+    type: "laptop-angled",
+    screenTitle: "VINCE",
+    screenSubtitle: "MILKY BRIGHT SKIN",
   },
   {
-    _id: "p2",
-    title: "Socan Music Licensing System",
-    slug: { current: "socan" },
-    categories: ["Enterprise & CRM", "Web Development"],
-    excerpt: "Enterprise web portal for automated digital rights management, royalty calculations, and high-security client verification.",
+    id: "p2",
+    title: "Terranox Adventure & Booking Engine",
+    client: "Terranox Expeditions",
+    tagline: "Global travel booking & dynamic activity planner",
+    category: "Web Development",
+    bgColor: "bg-[#fecaa7]", // Peach / Warm Apricot
+    textColor: "text-zinc-900",
+    slug: "terranox-travel",
+    type: "laptop-hand",
+    screenTitle: "TERRANOX",
+    screenSubtitle: "EXPLORE MORE WORRY LESS!",
   },
   {
-    _id: "p3",
-    title: "Validsoft Security Infrastructure",
-    slug: { current: "validsoft" },
-    categories: ["Creative & Design", "Web Development"],
-    excerpt: "High-conversion marketing presence and architectural redesign highlighting biometric authentication and enterprise fraud prevention.",
+    id: "p3",
+    title: "NutraPure Collagen Direct-to-Consumer Portal",
+    client: "NutraPure Global",
+    tagline: "Clinical supplement showcase & subscription portal",
+    category: "E-Commerce",
+    bgColor: "bg-[#d5d8df]", // Cool Stone Grey
+    textColor: "text-zinc-900",
+    slug: "nutrapure-collagen",
+    type: "laptop-stone",
+    screenTitle: "NutraPure",
+    screenSubtitle: "6000 mg Collagen Powder",
   },
   {
-    _id: "p4",
-    title: "Boston Prime Real Estate Engine",
-    slug: { current: "boston-prime" },
-    categories: ["Real Estate", "Web Development"],
-    excerpt: "Interactive MLS property search engine featuring automated map queries, virtual 3D tours, and lead routing CRM.",
+    id: "p4",
+    title: "GraphicDesign.Boom Creative Portfolio",
+    client: "Boom Visual Studio",
+    tagline: "Mobile-first agency portfolio & interactive showcase",
+    category: "Creative & Design",
+    bgColor: "bg-[#e2e4e8]", // Light Studio Grey
+    textColor: "text-zinc-900",
+    slug: "boom-design-studio",
+    type: "phone",
+    screenTitle: "GraphicDesign.Boom",
+    screenSubtitle: "Visual Identity & Social Design",
   },
   {
-    _id: "p5",
-    title: "Steelfire Industrial Manufacturing",
-    slug: { current: "steelfire" },
-    categories: ["Enterprise & CRM", "Creative & Design"],
-    excerpt: "B2B catalog architecture and quote calculation system engineered for precision manufacturing and procurement teams.",
-  },
-  {
-    _id: "p6",
-    title: "Unilock Construction Hub",
-    slug: { current: "unilock" },
-    categories: ["Real Estate", "Creative & Design"],
-    excerpt: "Commercial paving and construction visualization platform with high-resolution material simulators and contractor directories.",
+    id: "p5",
+    title: "OmniFlux Enterprise CRM & Automation",
+    client: "OmniFlux Global",
+    tagline: "Enterprise workflow automation & analytics dashboard",
+    category: "Enterprise & CRM",
+    bgColor: "bg-[#ebd7db]", // Soft Rose Pink
+    textColor: "text-zinc-900",
+    slug: "omniflux-crm",
+    type: "laptop-saas",
+    screenTitle: "OmniFlux CRM",
+    screenSubtitle: "Enterprise Operations Engine",
   },
 ];
 
 export default function ProjectCards({ projects }: ProjectCardsProps) {
-  const [selectedCategory, setSelectedCategory] = useState("All Projects");
-  const [activeSlide, setActiveSlide] = useState(0);
-  const carouselRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  const displayProjects = projects && projects.length > 0 ? projects : fallbackProjects;
+  // Drag & Scroll States
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
+  const [scrollProgress, setScrollProgress] = useState(0);
 
-  // ── Scroll animations ──
+  // Custom Cursor Badge States
+  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+  const [isHovering, setIsHovering] = useState(false);
+
+  // Update progress bar on scroll
+  const handleScroll = useCallback(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const maxScroll = el.scrollWidth - el.clientWidth;
+    if (maxScroll <= 0) {
+      setScrollProgress(0);
+      return;
+    }
+    const currentProgress = (el.scrollLeft / maxScroll) * 100;
+    setScrollProgress(Math.min(100, Math.max(0, currentProgress)));
+  }, []);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    el.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => el.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
+
+  // Mouse Drag Handlers
+  const handleMouseDown = (e: React.MouseEvent) => {
+    const el = containerRef.current;
+    if (!el) return;
+    setIsDragging(true);
+    setStartX(e.pageX - el.offsetLeft);
+    setScrollLeft(el.scrollLeft);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    // Update drag badge position relative to container
+    if (containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      setCursorPos({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+      });
+    }
+
+    if (!isDragging || !containerRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - containerRef.current.offsetLeft;
+    const walk = (x - startX) * 1.5; // Drag speed multiplier
+    containerRef.current.scrollLeft = scrollLeft - walk;
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  // GSAP Animations
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Header slide-up
       gsap.fromTo(
-        ".pc-header",
-        { y: 40, opacity: 0 },
+        ".portfolio-header",
+        { y: 30, opacity: 0 },
         {
-          y: 0, opacity: 1, duration: 1, ease: "expo.out",
-          scrollTrigger: { trigger: sectionRef.current, start: "top 80%", toggleActions: "play none none none" },
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 80%",
+            toggleActions: "play none none none",
+          },
         }
       );
-      // Desktop grid cards — stagger up
+
       gsap.fromTo(
-        ".pc-card",
-        { y: 60, opacity: 0 },
+        ".portfolio-card",
+        { y: 50, opacity: 0 },
         {
-          y: 0, opacity: 1, duration: 0.9, stagger: 0.13, ease: "power3.out",
-          scrollTrigger: { trigger: ".pc-grid", start: "top 82%", toggleActions: "play none none none" },
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          stagger: 0.12,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top 85%",
+            toggleActions: "play none none none",
+          },
         }
       );
     }, sectionRef);
-    return () => { ctx.revert(); ScrollTrigger.getAll().forEach(st => st.refresh()); };
+
+    return () => {
+      ctx.revert();
+      ScrollTrigger.getAll().forEach((st) => st.refresh());
+    };
   }, []);
 
-  const filteredProjects = displayProjects.filter((p) => {
-    if (selectedCategory === "All Projects") return true;
-    return p.categories?.some(
-      (cat) => cat.toLowerCase().includes(selectedCategory.toLowerCase()) ||
-               selectedCategory.toLowerCase().includes(cat.toLowerCase())
-    );
-  });
-
-  // Track active slide via scroll position
-  const handleCarouselScroll = useCallback(() => {
-    const el = carouselRef.current;
-    if (!el) return;
-    const scrollLeft = el.scrollLeft;
-    const cardWidth = el.scrollWidth / filteredProjects.length;
-    const idx = Math.round(scrollLeft / cardWidth);
-    setActiveSlide(Math.min(idx, filteredProjects.length - 1));
-  }, [filteredProjects.length]);
-
-  useEffect(() => {
-    const el = carouselRef.current;
-    if (!el) return;
-    el.addEventListener("scroll", handleCarouselScroll, { passive: true });
-    return () => el.removeEventListener("scroll", handleCarouselScroll);
-  }, [handleCarouselScroll]);
-
-  // Reset carousel position when filter changes
-  useEffect(() => {
-    setActiveSlide(0);
-    if (carouselRef.current) {
-      carouselRef.current.scrollTo({ left: 0, behavior: "instant" });
-    }
-  }, [selectedCategory]);
-
-  // Scroll to a specific slide on dot click
-  const scrollToSlide = (idx: number) => {
-    const el = carouselRef.current;
-    if (!el) return;
-    const cardWidth = el.scrollWidth / filteredProjects.length;
-    el.scrollTo({ left: cardWidth * idx, behavior: "smooth" });
-  };
-
-  const ProjectCard = ({ project, idx }: { project: Project; idx: number }) => {
-    const projectSlug = project.slug?.current || `project-${idx}`;
-    const projectCategories = project.categories || ["Web Development", "Design"];
-
-    return (
-      <div className="group redstone-card rounded-sm overflow-hidden flex flex-col justify-between">
-        {/* Visual Area */}
-        <div className="relative aspect-[16/10] w-full bg-zinc-900 overflow-hidden border-b border-white/[0.06]">
-          {project.image ? (
-            <Image
-              src={urlFor(project.image).width(800).height(500).url()}
-              alt={project.title}
-              fill
-              className="object-cover transition-transform duration-700 ease-out group-hover:scale-105 filter brightness-95 group-hover:brightness-105"
-            />
-          ) : (
-            <div className="w-full h-full flex flex-col items-center justify-center p-8 bg-gradient-to-br from-zinc-900 via-zinc-950 to-black">
-              <div className="font-mono text-xs text-zinc-400 uppercase tracking-widest mb-2">
-                Case Study // {String(idx + 1).padStart(2, "0")}
-              </div>
-              <div className="text-xl font-heading font-bold text-zinc-300 text-center uppercase tracking-tight">
-                {project.title}
-              </div>
-            </div>
-          )}
-          {/* Corner Index Stamp */}
-          <div className="absolute top-3 left-3 bg-black/80 backdrop-blur-md px-2.5 py-1 text-[10px] font-mono text-zinc-300 tracking-widest border border-white/10 uppercase">
-            {String(idx + 1).padStart(2, "0")}
-          </div>
-        </div>
-
-        {/* Content Area */}
-        <div className="p-6 sm:p-7 flex-1 flex flex-col justify-between">
-          <div>
-            <div className="flex flex-wrap gap-2 mb-3">
-              {projectCategories.slice(0, 2).map((cat) => (
-                <span key={cat} className="text-[10px] font-mono uppercase tracking-widest text-zinc-400">
-                  #{cat}
-                </span>
-              ))}
-            </div>
-            <h3 className="font-heading font-bold text-xl sm:text-2xl text-white group-hover:text-zinc-200 transition-colors tracking-tight mb-3">
-              <Link href={`/portfolio/${projectSlug}`}>{project.title}</Link>
-            </h3>
-            {project.excerpt && (
-              <p className="text-zinc-400 text-xs sm:text-sm font-light leading-relaxed line-clamp-2 mb-6">
-                {project.excerpt}
-              </p>
-            )}
-          </div>
-          <div className="pt-4 border-t border-white/[0.06] flex items-center justify-between">
-            <span className="font-mono text-[10px] uppercase tracking-widest text-zinc-500">
-              Full Case Review
-            </span>
-            <Link
-              href={`/portfolio/${projectSlug}`}
-              className="inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-widest text-zinc-400 group-hover:text-white transition-colors"
-            >
-              <span>Explore</span>
-              <span className="text-white font-bold transition-transform duration-300 group-hover:translate-x-1">
-                &rarr;
-              </span>
-            </Link>
-          </div>
-        </div>
-      </div>
-    );
-  };
+  // Merge cms projects if available
+  const itemsToRender =
+    projects && projects.length >= 3
+      ? projects.slice(0, 6).map((p, idx) => {
+          const fallback = PORTFOLIO_ITEMS[idx % PORTFOLIO_ITEMS.length];
+          return {
+            id: p._id || fallback.id,
+            title: p.title || fallback.title,
+            client: p.categories?.[0] || fallback.client,
+            tagline: p.excerpt || fallback.tagline,
+            category: p.categories?.[0] || fallback.category,
+            bgColor: fallback.bgColor,
+            textColor: fallback.textColor,
+            slug: p.slug?.current || fallback.slug,
+            type: fallback.type,
+            screenTitle: p.title?.split(" ")[0] || fallback.screenTitle,
+            screenSubtitle: p.excerpt?.slice(0, 25) || fallback.screenSubtitle,
+            image: p.image,
+          };
+        })
+      : PORTFOLIO_ITEMS;
 
   return (
-    <section ref={sectionRef} id="portfolio" className="py-20 md:py-28 lg:py-36 bg-[#000000] relative border-b border-white/[0.08]">
-      <div className="w-full">
-        {/* Header — padded */}
-        <div className="px-6 lg:px-12">
-          <div className="pc-header flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10 md:mb-16 pb-4 border-b border-white/[0.08]">
-            {/* Left — label + title */}
-            <div className="flex-shrink-0">
-              <div className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.25em] text-zinc-400 mb-2">
-                <span className="w-6 h-[1.5px] bg-white" />
-                Featured Portfolio
-              </div>
-              <h2 className="font-heading font-black tracking-tight text-3xl sm:text-4xl md:text-5xl text-white uppercase leading-none">
-                Selected Cases
-              </h2>
-            </div>
+    <section
+      ref={sectionRef}
+      id="portfolio"
+      className="py-20 md:py-28 lg:py-36 bg-[#0c0f10] text-white relative border-b border-white/[0.08] overflow-hidden"
+    >
+      <div className="max-w-[1600px] mx-auto px-6 sm:px-10 lg:px-16">
+        {/* Header Section */}
+        <div className="portfolio-header grid grid-cols-1 lg:grid-cols-12 gap-8 items-end mb-14 md:mb-20">
+          {/* Left Column — Main Headline */}
+          <div className="lg:col-span-7">
+            <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-[1.1]">
+              Results that move <br />
+              businesses forward.
+            </h2>
+          </div>
 
-            {/* Right — tabs + archive link */}
-            <div className="flex flex-col items-end gap-3 min-w-0">
-              <Link
-                href="/portfolio"
-                className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-zinc-400 hover:text-white transition-colors flex-shrink-0"
-              >
-                <span>View Complete Archive (500+)</span>
-                <span className="text-white">&rarr;</span>
-              </Link>
-              {/* Category Tabs — scrollable */}
-              <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
-                {CATEGORIES.map((cat) => {
-                  const isActive = selectedCategory === cat;
-                  return (
-                    <button
-                      key={cat}
-                      onClick={() => setSelectedCategory(cat)}
-                      className={`px-4 py-2 text-xs font-mono uppercase tracking-wider rounded-sm transition-all duration-200 cursor-pointer flex-shrink-0 ${
-                        isActive
-                          ? "bg-white text-black font-bold shadow-sm"
-                          : "bg-zinc-900/80 text-zinc-400 border border-zinc-800 hover:border-zinc-600 hover:text-white"
-                      }`}
-                    >
-                      {cat}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
+          {/* Right Column — Paragraph Description */}
+          <div className="lg:col-span-5">
+            <p className="text-zinc-400 text-sm sm:text-base leading-relaxed max-w-lg lg:ml-auto">
+              From startups to global enterprises, our clients trust CGplux to build
+              automation strategies, custom web platforms, and mobile products that create
+              efficiency and long-term value.
+            </p>
           </div>
         </div>
 
-        {/* ─── MOBILE: Scroll-Snap Carousel ─── */}
-        <div className="block md:hidden">
+        {/* Draggable Cards Carousel Container */}
+        <div
+          className="relative"
+          onMouseEnter={() => setIsHovering(true)}
+          onMouseLeave={() => {
+            setIsHovering(false);
+            setIsDragging(false);
+          }}
+        >
+          {/* Floating "Drag" Circle Badge Indicator */}
           <div
-            ref={carouselRef}
-            className="flex overflow-x-auto scrollbar-hide gap-4 px-6 pb-2"
-            style={{ scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch" }}
+            className={`pointer-events-none absolute z-30 transition-opacity duration-300 ease-out hidden md:flex items-center justify-center ${
+              isHovering ? "opacity-100 scale-100" : "opacity-0 scale-75"
+            }`}
+            style={{
+              left: `${cursorPos.x}px`,
+              top: `${cursorPos.y}px`,
+              transform: `translate(-50%, -50%) scale(${isDragging ? 1.15 : 1})`,
+            }}
           >
-            {filteredProjects.map((project, idx) => (
+            <div className="w-14 h-14 rounded-full bg-white text-black text-xs font-bold tracking-wider uppercase flex items-center justify-center shadow-2xl border border-black/10 transition-transform duration-150">
+              {isDragging ? "Hold" : "Drag"}
+            </div>
+          </div>
+
+          {/* Scrollable Flex Track */}
+          <div
+            ref={containerRef}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            className={`flex gap-5 sm:gap-6 overflow-x-auto scrollbar-hide py-4 px-1 select-none ${
+              isDragging ? "cursor-grabbing" : "cursor-grab"
+            }`}
+            style={{ WebkitOverflowScrolling: "touch" }}
+          >
+            {itemsToRender.map((item, idx) => (
               <div
-                key={project._id || idx}
-                className="flex-shrink-0 w-[82vw] max-w-[340px]"
-                style={{ scrollSnapAlign: "start" }}
+                key={item.id || idx}
+                className="portfolio-card flex-shrink-0 w-[290px] sm:w-[340px] md:w-[380px] lg:w-[410px] h-[460px] sm:h-[520px] md:h-[570px] rounded-[28px] sm:rounded-[32px] overflow-hidden relative shadow-2xl flex flex-col justify-between group transition-transform duration-500 hover:-translate-y-1.5"
               >
-                <ProjectCard project={project} idx={idx} />
+                {/* Card Outer Container with custom background color */}
+                <div
+                  className={`w-full h-full ${item.bgColor} relative p-6 sm:p-8 flex flex-col justify-between overflow-hidden`}
+                >
+                  {/* Subtle top subtle shine gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-black/20 pointer-events-none" />
+
+                  {/* Top Bar / Category Tag */}
+                  <div className="relative z-10 flex items-center justify-between">
+                    <span className="text-[11px] font-mono uppercase tracking-widest px-3 py-1 rounded-full bg-black/15 backdrop-blur-md text-white/90 font-medium">
+                      {item.category}
+                    </span>
+                    <span className="text-xs font-mono font-bold text-white/70">
+                      0{idx + 1}
+                    </span>
+                  </div>
+
+                  {/* Center Device Visual / Mockup */}
+                  <div className="relative w-full flex-1 flex items-center justify-center my-4 overflow-hidden">
+                    {item.image ? (
+                      <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl border border-white/20">
+                        <Image
+                          src={urlFor(item.image).width(800).height(600).url()}
+                          alt={item.title}
+                          fill
+                          className="object-cover transition-transform duration-700 group-hover:scale-105"
+                        />
+                      </div>
+                    ) : (
+                      /* Render High-End 3D Device Mockup according to type */
+                      <RenderDeviceMockup type={item.type} item={item} />
+                    )}
+                  </div>
+
+                  {/* Bottom Information overlay */}
+                  <div className="relative z-10 pt-2 flex items-end justify-between gap-4">
+                    <div className="min-w-0 flex-1">
+                      <h3 className={`font-heading font-bold text-lg sm:text-xl line-clamp-1 ${item.textColor}`}>
+                        {item.title}
+                      </h3>
+                      <p className={`text-xs font-light opacity-80 line-clamp-1 mt-0.5 ${item.textColor}`}>
+                        {item.tagline}
+                      </p>
+                    </div>
+
+                    <Link
+                      href={`/portfolio/${item.slug}`}
+                      className="w-10 h-10 rounded-full bg-black/80 hover:bg-black text-white flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-110 shadow-lg"
+                      aria-label={`View ${item.title}`}
+                    >
+                      <svg
+                        className="w-4 h-4 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M7 17L17 7M17 7H8M17 7V16"
+                        />
+                      </svg>
+                    </Link>
+                  </div>
+                </div>
               </div>
             ))}
-            {/* Trailing spacer so last card has breathing room */}
-            <div className="flex-shrink-0 w-4" aria-hidden="true" />
-          </div>
 
-          {/* Dot indicators + counter */}
-          <div className="flex items-center justify-between px-6 mt-5">
-            {/* Dots */}
-            <div className="flex items-center gap-2">
-              {filteredProjects.map((_, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => scrollToSlide(idx)}
-                  aria-label={`Go to slide ${idx + 1}`}
-                  className={`rounded-sm transition-all duration-300 cursor-pointer ${
-                    idx === activeSlide
-                      ? "w-6 h-[3px] bg-white"
-                      : "w-[6px] h-[3px] bg-zinc-700 hover:bg-zinc-500"
-                  }`}
-                />
-              ))}
-            </div>
-            {/* Slide counter */}
-            <span className="font-mono text-[10px] uppercase tracking-widest text-zinc-500">
-              {String(activeSlide + 1).padStart(2, "0")} /{" "}
-              {String(filteredProjects.length).padStart(2, "0")}
-            </span>
+            {/* Right padding box so last item has breathing room */}
+            <div className="flex-shrink-0 w-8" aria-hidden="true" />
           </div>
         </div>
 
-        {/* ─── DESKTOP: Original 3-col Grid ─── */}
-        <div className="pc-grid hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 px-6 lg:px-12">
-          {filteredProjects.map((project, idx) => (
-            <div key={project._id || idx} className="pc-card">
-              <ProjectCard project={project} idx={idx} />
-            </div>
-          ))}
+        {/* Bottom Horizontal Progress Indicator */}
+        <div className="mt-12 sm:mt-16 flex flex-col items-center">
+          <div className="w-full max-w-xl h-[3px] bg-zinc-800/80 rounded-full relative overflow-hidden">
+            <div
+              className="h-full bg-gradient-to-r from-teal-400 via-emerald-400 to-cyan-400 rounded-full transition-all duration-150 ease-out shadow-[0_0_12px_rgba(45,212,191,0.6)]"
+              style={{ width: `${Math.max(15, scrollProgress)}%` }}
+            />
+          </div>
         </div>
       </div>
     </section>
   );
 }
+
+{/* Helper component to render realistic 3D device mockups matching the screenshot aesthetic */}
+function RenderDeviceMockup({
+  type,
+  item,
+}: {
+  type: string;
+  item: CardItemData;
+}) {
+  if (type === "laptop-angled") {
+    // Card 1: Angled tilted Macbook showing Skincare website
+    return (
+      <div className="relative w-full h-[260px] sm:h-[290px] flex items-center justify-center transform -rotate-12 group-hover:-rotate-6 transition-transform duration-700 ease-out scale-95 sm:scale-100">
+        {/* Laptop Body */}
+        <div className="w-[260px] sm:w-[300px] h-[170px] sm:h-[195px] bg-[#1a1c23] rounded-t-xl p-2 shadow-2xl border border-white/20 relative">
+          {/* Laptop Screen Content */}
+          <div className="w-full h-full bg-sky-50 rounded-lg overflow-hidden flex flex-col relative text-zinc-800">
+            {/* Header */}
+            <div className="bg-sky-600 text-white px-3 py-1.5 flex items-center justify-between text-[10px] font-bold">
+              <span>{item.screenTitle}</span>
+              <span className="text-[8px] bg-white/20 px-1.5 py-0.5 rounded">SHOP NOW</span>
+            </div>
+            {/* Banner */}
+            <div className="p-3 bg-gradient-to-r from-sky-100 to-blue-50 flex-1 flex flex-col justify-center">
+              <span className="text-[8px] font-mono uppercase tracking-wider text-sky-700 font-semibold">
+                New Arrival
+              </span>
+              <h4 className="text-xs font-black text-sky-950 uppercase tracking-tight mt-0.5 leading-none">
+                {item.screenSubtitle}
+              </h4>
+              <div className="mt-2 w-14 h-4 bg-sky-600 text-white text-[8px] flex items-center justify-center font-bold rounded">
+                EXPLORE
+              </div>
+            </div>
+            {/* Skincare Bottle visual placeholder graphic */}
+            <div className="absolute right-2 bottom-1 w-16 h-24 bg-white/90 rounded-lg shadow-md border border-sky-100 flex flex-col items-center justify-center p-1">
+              <div className="w-4 h-5 bg-sky-500 rounded-t-md" />
+              <div className="w-10 h-14 bg-sky-100 rounded mt-0.5 flex flex-col items-center justify-center">
+                <span className="text-[6px] font-bold text-sky-800">VINCE</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* Laptop Base Stand */}
+        <div className="absolute -bottom-2 w-[290px] sm:w-[330px] h-[12px] bg-[#2a2d37] rounded-b-xl border-t border-white/10 shadow-2xl flex justify-center">
+          <div className="w-12 h-1 bg-zinc-600 rounded-b" />
+        </div>
+      </div>
+    );
+  }
+
+  if (type === "laptop-hand") {
+    // Card 2: Hand holding laptop showing Travel & Adventure platform
+    return (
+      <div className="relative w-full h-[260px] sm:h-[290px] flex items-center justify-center group-hover:scale-105 transition-transform duration-700 ease-out">
+        {/* Laptop Screen */}
+        <div className="w-[270px] sm:w-[310px] h-[175px] sm:h-[200px] bg-[#0f172a] rounded-t-xl p-2 shadow-2xl border border-white/30 relative">
+          <div className="w-full h-full bg-amber-50 rounded-lg overflow-hidden flex flex-col text-zinc-900">
+            {/* Navigation */}
+            <div className="bg-amber-900/90 text-white px-3 py-1 flex items-center justify-between text-[9px] font-bold">
+              <span>TERRANOX</span>
+              <div className="flex gap-1 text-[7px] text-amber-200">
+                <span>PLANS</span>
+                <span>DESTINATIONS</span>
+              </div>
+            </div>
+            {/* Hero Image Area */}
+            <div className="p-3 bg-gradient-to-br from-amber-500 via-orange-400 to-amber-600 text-white flex-1 flex flex-col justify-center relative overflow-hidden">
+              <div className="absolute -right-2 -bottom-2 w-24 h-24 bg-amber-300/30 rounded-full blur-xl" />
+              <h4 className="text-xs font-black uppercase tracking-tight max-w-[140px] leading-tight">
+                {item.screenSubtitle}
+              </h4>
+              <div className="mt-2 bg-white text-zinc-900 text-[8px] font-bold px-2 py-0.5 rounded w-max shadow">
+                BOOK TRIP &rarr;
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* Laptop Base */}
+        <div className="absolute bottom-6 w-[300px] sm:w-[340px] h-[10px] bg-[#334155] rounded-b-xl border-t border-white/20 shadow-xl flex justify-center">
+          <div className="w-14 h-1 bg-slate-500 rounded-b" />
+        </div>
+        {/* 3D Hand Base Graphic */}
+        <div className="absolute bottom-0 w-28 h-12 bg-amber-200/80 rounded-t-full blur-[0.5px] border-t-2 border-amber-300 shadow-inner flex items-center justify-center">
+          <span className="text-[9px] font-bold text-amber-900/40 uppercase">3D HOLD</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (type === "laptop-stone") {
+    // Card 3: Laptop sitting on a concrete stone block mockup
+    return (
+      <div className="relative w-full h-[260px] sm:h-[290px] flex items-center justify-center transform rotate-3 group-hover:rotate-0 transition-transform duration-700 ease-out">
+        {/* Concrete Block Base */}
+        <div className="absolute bottom-1 w-[220px] h-[55px] bg-[#a8abae] rounded-lg shadow-2xl border-t border-white/40 transform -skew-x-12 flex items-center justify-center">
+          <div className="w-full h-full bg-gradient-to-r from-zinc-400 via-zinc-300 to-zinc-500 opacity-90 rounded-lg" />
+        </div>
+        {/* Laptop Screen */}
+        <div className="relative z-10 w-[260px] sm:w-[300px] h-[170px] sm:h-[190px] bg-[#18181b] rounded-t-xl p-2 shadow-2xl border border-white/30">
+          <div className="w-full h-full bg-purple-50 rounded-lg overflow-hidden flex flex-col text-zinc-900">
+            <div className="bg-purple-900 text-white px-3 py-1 flex items-center justify-between text-[9px] font-bold">
+              <span>{item.screenTitle}</span>
+              <span className="text-[7px] text-purple-200">VERIFIED</span>
+            </div>
+            <div className="p-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white flex-1 flex flex-col justify-center">
+              <h4 className="text-xs font-black uppercase tracking-tight max-w-[130px] leading-tight">
+                {item.screenSubtitle}
+              </h4>
+              <span className="text-[8px] bg-white/20 px-1.5 py-0.5 rounded w-max mt-1 font-mono">
+                20+ Certificates
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (type === "phone") {
+    // Card 4: Smartphone mockup displaying GraphicDesign.Boom profile & grid
+    return (
+      <div className="relative w-[180px] sm:w-[200px] h-[260px] sm:h-[295px] bg-[#111] rounded-[32px] p-2 shadow-2xl border-4 border-zinc-700/80 group-hover:scale-105 transition-transform duration-700 ease-out">
+        {/* Camera notch */}
+        <div className="absolute top-3 left-1/2 -translate-x-1/2 w-16 h-3 bg-black rounded-full z-20" />
+        {/* Screen */}
+        <div className="w-full h-full bg-white rounded-[24px] overflow-hidden flex flex-col text-zinc-900 pt-5 px-2.5 pb-2 text-[8px]">
+          {/* Account Header */}
+          <div className="flex items-center justify-between border-b pb-1.5 font-bold">
+            <span className="truncate max-w-[110px]">{item.screenTitle}</span>
+            <span className="text-red-500 text-[10px]">●</span>
+          </div>
+
+          {/* Stats */}
+          <div className="flex justify-between text-center my-2 font-mono">
+            <div>
+              <div className="font-bold text-[9px]">252</div>
+              <div className="text-[6px] text-zinc-500">Posts</div>
+            </div>
+            <div>
+              <div className="font-bold text-[9px]">31.3K</div>
+              <div className="text-[6px] text-zinc-500">Followers</div>
+            </div>
+            <div>
+              <div className="font-bold text-[9px]">489</div>
+              <div className="text-[6px] text-zinc-500">Following</div>
+            </div>
+          </div>
+
+          {/* Action buttons */}
+          <div className="grid grid-cols-2 gap-1 mb-2">
+            <div className="bg-sky-500 text-white font-bold text-[7px] text-center py-1 rounded">
+              Follow
+            </div>
+            <div className="bg-zinc-100 text-zinc-800 font-bold text-[7px] text-center py-1 rounded">
+              Message
+            </div>
+          </div>
+
+          {/* Grid posts */}
+          <div className="grid grid-cols-3 gap-1 flex-1">
+            <div className="bg-amber-400 rounded flex items-center justify-center text-[7px] font-black text-amber-950">
+              LOGO
+            </div>
+            <div className="bg-emerald-500 rounded flex items-center justify-center text-[7px] font-black text-white">
+              3D
+            </div>
+            <div className="bg-sky-400 rounded flex items-center justify-center text-[7px] font-black text-white">
+              UI
+            </div>
+            <div className="bg-zinc-800 rounded flex items-center justify-center text-[7px] font-bold text-white">
+              RUSTY
+            </div>
+            <div className="bg-rose-400 rounded flex items-center justify-center text-[7px] font-bold text-white">
+              APP
+            </div>
+            <div className="bg-indigo-500 rounded flex items-center justify-center text-[7px] font-bold text-white">
+              BRAND
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Card 5: Laptop SaaS CRM Dashboard
+  return (
+    <div className="relative w-full h-[260px] sm:h-[290px] flex items-center justify-center group-hover:scale-105 transition-transform duration-700 ease-out">
+      <div className="w-[270px] sm:w-[310px] h-[175px] sm:h-[200px] bg-[#1e1e24] rounded-t-xl p-2 shadow-2xl border border-white/20">
+        <div className="w-full h-full bg-slate-900 rounded-lg p-2.5 text-white flex flex-col justify-between text-[9px]">
+          <div className="flex justify-between items-center border-b border-slate-800 pb-1 font-bold">
+            <span className="text-rose-300">{item.screenTitle}</span>
+            <span className="text-[7px] bg-emerald-500/20 text-emerald-300 px-1 rounded">
+              LIVE 99.9%
+            </span>
+          </div>
+          <div className="grid grid-cols-3 gap-1.5 my-2">
+            <div className="bg-slate-800/80 p-1.5 rounded">
+              <div className="text-[7px] text-slate-400">Users</div>
+              <div className="font-bold text-xs text-rose-300">142.8K</div>
+            </div>
+            <div className="bg-slate-800/80 p-1.5 rounded">
+              <div className="text-[7px] text-slate-400">Revenue</div>
+              <div className="font-bold text-xs text-emerald-400">$84.2K</div>
+            </div>
+            <div className="bg-slate-800/80 p-1.5 rounded">
+              <div className="text-[7px] text-slate-400">Growth</div>
+              <div className="font-bold text-xs text-cyan-300">+34%</div>
+            </div>
+          </div>
+          <div className="h-10 bg-slate-800 rounded p-1 flex items-end justify-between gap-1">
+            <div className="w-full bg-rose-400 h-4 rounded-t" />
+            <div className="w-full bg-rose-500 h-6 rounded-t" />
+            <div className="w-full bg-rose-400 h-3 rounded-t" />
+            <div className="w-full bg-rose-300 h-7 rounded-t" />
+            <div className="w-full bg-rose-500 h-5 rounded-t" />
+          </div>
+        </div>
+      </div>
+      <div className="absolute bottom-6 w-[300px] sm:w-[340px] h-[10px] bg-slate-700 rounded-b-xl border-t border-white/10 shadow-xl flex justify-center">
+        <div className="w-14 h-1 bg-slate-500 rounded-b" />
+      </div>
+    </div>
+  );
+}
+
