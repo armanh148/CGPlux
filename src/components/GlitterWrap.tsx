@@ -34,7 +34,7 @@ export interface GlitterWrapProps {
 export default function GlitterWrap({
   particleCount,
   count,
-  speed = 1,
+  speed = 2 ,
   opacity = 0.85,
   colors = ["#ffffff", "#e4e4e7", "#f4f4f5", "#a1a1aa"],
   className = "",
@@ -52,7 +52,7 @@ export default function GlitterWrap({
     if (!ctx) return;
 
     let animId: number;
-    let width = 0;
+    let width = 50;
     let height = 0;
     let dpr = 1;
 
