@@ -34,6 +34,15 @@ interface CardItemData {
   screenSubtitle?: string;
 }
 
+const CATEGORIES = [
+  "ALL PROJECTS",
+  "WEB DEVELOPMENT",
+  "CREATIVE & DESIGN",
+  "REAL ESTATE",
+  "E-COMMERCE",
+  "ENTERPRISE & CRM",
+];
+
 const PORTFOLIO_ITEMS: CardItemData[] = [
   {
     id: "p1",
@@ -100,11 +109,27 @@ const PORTFOLIO_ITEMS: CardItemData[] = [
     screenTitle: "OmniFlux CRM",
     screenSubtitle: "Enterprise Operations Engine",
   },
+  {
+    id: "p6",
+    title: "Boston Prime MLS Real Estate Engine",
+    client: "Boston Prime Properties",
+    tagline: "Interactive 3D virtual tour & property MLS portal",
+    category: "Real Estate",
+    bgColor: "bg-[#cce3de]", // Soft Mint Green
+    textColor: "text-zinc-900",
+    slug: "boston-prime-real-estate",
+    type: "laptop-angled",
+    screenTitle: "BOSTON PRIME",
+    screenSubtitle: "3D REAL ESTATE PLATFORM",
+  },
 ];
 
 export default function ProjectCards({ projects }: ProjectCardsProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Selected category filter
+  const [selectedCategory, setSelectedCategory] = useState("ALL PROJECTS");
 
   // Drag & Scroll States
   const [isDragging, setIsDragging] = useState(false);
@@ -115,6 +140,13 @@ export default function ProjectCards({ projects }: ProjectCardsProps) {
   // Custom Cursor Badge States
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
+
+  // Reset scroll position on category change
+  useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.scrollTo({ left: 0, behavior: "smooth" });
+    }
+  }, [selectedCategory]);
 
   // Update progress bar on scroll
   const handleScroll = useCallback(() => {
@@ -232,6 +264,14 @@ export default function ProjectCards({ projects }: ProjectCardsProps) {
         })
       : PORTFOLIO_ITEMS;
 
+  const filteredItems = itemsToRender.filter((item) => {
+    if (selectedCategory === "ALL PROJECTS") return true;
+    return (
+      item.category.toLowerCase().includes(selectedCategory.toLowerCase()) ||
+      selectedCategory.toLowerCase().includes(item.category.toLowerCase())
+    );
+  });
+
   return (
     <section
       ref={sectionRef}
@@ -240,50 +280,52 @@ export default function ProjectCards({ projects }: ProjectCardsProps) {
     >
       <div className="max-w-[1600px] mx-auto px-6 sm:px-10 lg:px-16">
         {/* Header Section */}
-        <div className="portfolio-header grid grid-cols-1 lg:grid-cols-12 gap-8 items-end mb-14 md:mb-20">
-          {/* Left Column — Main Headline */}
-          <div className="lg:col-span-7">
-            <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-[1.1]">
-              Results that move <br />
-              businesses forward.
+        <div className="portfolio-header flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 md:mb-16 pb-6 border-b border-white/[0.08]">
+          {/* Left Column — Label + Title */}
+          <div>
+            <div className="flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[0.25em] text-zinc-400 mb-2">
+              <span className="w-5 h-[1.5px] bg-zinc-400" />
+              FEATURED PORTFOLIO
+            </div>
+            <h2 className="font-heading font-black tracking-tight text-3xl sm:text-4xl md:text-5xl text-white uppercase leading-none">
+              SELECTED CASES
             </h2>
           </div>
 
-          {/* Right Column — Paragraph Description */}
-          <div className="lg:col-span-5">
-            <p className="text-zinc-400 text-sm sm:text-base leading-relaxed max-w-lg lg:ml-auto">
-              From startups to global enterprises, our clients trust CGplux to build
-              automation strategies, custom web platforms, and mobile products that create
-              efficiency and long-term value.
-            </p>
+          {/* Right Column — Archive Link + Category Tabs */}
+          <div className="flex flex-col items-start md:items-end gap-3.5 min-w-0">
+            <Link
+              href="/portfolio"
+              className="inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-widest text-zinc-400 hover:text-white transition-colors"
+            >
+              <span>VIEW COMPLETE ARCHIVE (500+)</span>
+              <span className="text-white">&rarr;</span>
+            </Link>
+
+            {/* Category Tabs */}
+            <div className="flex gap-2 overflow-x-auto max-w-full pb-1 scrollbar-hide">
+              {CATEGORIES.map((cat) => {
+                const isActive = selectedCategory === cat;
+                return (
+                  <button
+                    key={cat}
+                    onClick={() => setSelectedCategory(cat)}
+                    className={`px-3.5 py-1.5 text-[11px] font-mono uppercase tracking-wider rounded-sm transition-all duration-200 cursor-pointer flex-shrink-0 whitespace-nowrap ${
+                      isActive
+                        ? "bg-white text-black font-bold shadow-md"
+                        : "bg-zinc-900/90 text-zinc-400 border border-zinc-800 hover:border-zinc-600 hover:text-white"
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
 
         {/* Draggable Cards Carousel Container */}
-        <div
-          className="relative"
-          onMouseEnter={() => setIsHovering(true)}
-          onMouseLeave={() => {
-            setIsHovering(false);
-            setIsDragging(false);
-          }}
-        >
-          {/* Floating "Drag" Circle Badge Indicator */}
-          <div
-            className={`pointer-events-none absolute z-30 transition-opacity duration-300 ease-out hidden md:flex items-center justify-center ${
-              isHovering ? "opacity-100 scale-100" : "opacity-0 scale-75"
-            }`}
-            style={{
-              left: `${cursorPos.x}px`,
-              top: `${cursorPos.y}px`,
-              transform: `translate(-50%, -50%) scale(${isDragging ? 1.15 : 1})`,
-            }}
-          >
-            <div className="w-14 h-14 rounded-full bg-white text-black text-xs font-bold tracking-wider uppercase flex items-center justify-center shadow-2xl border border-black/10 transition-transform duration-150">
-              {isDragging ? "Hold" : "Drag"}
-            </div>
-          </div>
-
+        <div className="relative">
           {/* Scrollable Flex Track */}
           <div
             ref={containerRef}
@@ -295,10 +337,10 @@ export default function ProjectCards({ projects }: ProjectCardsProps) {
             }`}
             style={{ WebkitOverflowScrolling: "touch" }}
           >
-            {itemsToRender.map((item, idx) => (
+            {filteredItems.map((item, idx) => (
               <div
                 key={item.id || idx}
-                className="portfolio-card flex-shrink-0 w-[290px] sm:w-[340px] md:w-[380px] lg:w-[410px] h-[460px] sm:h-[520px] md:h-[570px] rounded-[28px] sm:rounded-[32px] overflow-hidden relative shadow-2xl flex flex-col justify-between group transition-transform duration-500 hover:-translate-y-1.5"
+                className="portfolio-card flex-shrink-0 w-[290px] sm:w-[340px] md:w-[380px] lg:w-[410px] h-[460px] sm:h-[520px] md:h-[570px] rounded-none border border-white/10 overflow-hidden relative shadow-2xl flex flex-col justify-between group transition-transform duration-500 hover:-translate-y-1.5"
               >
                 {/* Card Outer Container with custom background color */}
                 <div
@@ -309,7 +351,7 @@ export default function ProjectCards({ projects }: ProjectCardsProps) {
 
                   {/* Top Bar / Category Tag */}
                   <div className="relative z-10 flex items-center justify-between">
-                    <span className="text-[11px] font-mono uppercase tracking-widest px-3 py-1 rounded-full bg-black/15 backdrop-blur-md text-white/90 font-medium">
+                    <span className="text-[11px] font-mono uppercase tracking-widest px-3 py-1 rounded-sm bg-black/20 backdrop-blur-md text-white/90 font-medium border border-white/10">
                       {item.category}
                     </span>
                     <span className="text-xs font-mono font-bold text-white/70">
@@ -320,7 +362,7 @@ export default function ProjectCards({ projects }: ProjectCardsProps) {
                   {/* Center Device Visual / Mockup */}
                   <div className="relative w-full flex-1 flex items-center justify-center my-4 overflow-hidden">
                     {item.image ? (
-                      <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl border border-white/20">
+                      <div className="relative w-full h-full rounded-none overflow-hidden shadow-2xl border border-white/20">
                         <Image
                           src={urlFor(item.image).width(800).height(600).url()}
                           alt={item.title}
@@ -347,7 +389,7 @@ export default function ProjectCards({ projects }: ProjectCardsProps) {
 
                     <Link
                       href={`/portfolio/${item.slug}`}
-                      className="w-10 h-10 rounded-full bg-black/80 hover:bg-black text-white flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-110 shadow-lg"
+                      className="w-10 h-10 rounded-sm bg-black/80 hover:bg-black text-white flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-105 shadow-lg border border-white/10"
                       aria-label={`View ${item.title}`}
                     >
                       <svg
