@@ -132,7 +132,7 @@ export default function ServiceGrid({ services }: ServiceGridProps) {
 
   return (
     <section ref={sectionRef} id="services" className="py-20 md:py-28 lg:py-36 bg-[#000000] relative border-b border-white/[0.08]">
-      <div className="w-full px-6 lg:px-12">
+      <div className="w-full px-6 sm:px-10 lg:px-16">
         {/* Section Header */}
         <div className="sg-header flex flex-col md:flex-row md:items-end justify-between gap-6 pb-12 border-b border-white/[0.08]">
           <div>
