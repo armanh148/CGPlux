@@ -32,6 +32,7 @@ interface CardItemData {
   type: "laptop-angled" | "laptop-hand" | "laptop-stone" | "phone" | "laptop-saas";
   screenTitle?: string;
   screenSubtitle?: string;
+  image?: any;
 }
 
 const CATEGORIES = [
