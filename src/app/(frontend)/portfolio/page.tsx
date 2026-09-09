@@ -16,7 +16,7 @@ export default async function PortfolioPage() {
   return (
     <section className="pt-32 md:pt-40 pb-16 md:pb-32 bg-[#000000] overflow-hidden border-b border-white/[0.08]">
       <div className="absolute inset-0 redstone-grid-lines opacity-40 pointer-events-none" />
-      <div className="w-full px-6 lg:px-12 relative">
+      <div className="w-full px-6 sm:px-10 lg:px-16 relative">
         <div className="flex flex-col gap-8">
           <div className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.25em] text-zinc-400">
             <span className="w-6 h-[1.5px] bg-white" />
@@ -32,7 +32,7 @@ export default async function PortfolioPage() {
           )}
         </div>
       </div>
-      <div className="w-full px-6 lg:px-12 relative mt-20">
+      <div className="w-full px-6 sm:px-10 lg:px-16 relative mt-16 sm:mt-20">
         <PortfolioGrid items={items} />
       </div>
     </section>

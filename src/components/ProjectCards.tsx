@@ -278,7 +278,7 @@ export default function ProjectCards({ projects }: ProjectCardsProps) {
       id="portfolio"
       className="py-20 md:py-28 lg:py-36 bg-[#0c0f10] text-white relative border-b border-white/[0.08] overflow-hidden"
     >
-      <div className="max-w-[1600px] mx-auto px-6 sm:px-10 lg:px-16">
+      <div className="w-full px-6 sm:px-10 lg:px-16">
         {/* Header Section */}
         <div className="portfolio-header flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 md:mb-16 pb-6 border-b border-white/[0.08]">
           {/* Left Column — Label + Title */}
@@ -344,7 +344,7 @@ export default function ProjectCards({ projects }: ProjectCardsProps) {
               >
                 {/* Card Outer Container with custom background color */}
                 <div
-                  className={`w-full h-full ${item.bgColor} relative p-6 sm:p-8 flex flex-col justify-between overflow-hidden`}
+                  className={`w-full h-full ${item.bgColor} relative p-6 sm:p-8 flex flex-col justify-between overflow-hidden filter grayscale group-hover:grayscale-0 transition-all duration-700 ease-out`}
                 >
                   {/* Subtle top subtle shine gradient */}
                   <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-black/20 pointer-events-none" />
@@ -360,14 +360,14 @@ export default function ProjectCards({ projects }: ProjectCardsProps) {
                   </div>
 
                   {/* Center Device Visual / Mockup */}
-                  <div className="relative w-full flex-1 flex items-center justify-center my-4 overflow-hidden">
+                  <div className="relative w-full flex-1 flex items-center justify-center my-4 overflow-hidden filter grayscale group-hover:grayscale-0 transition-all duration-700 ease-out">
                     {item.image ? (
                       <div className="relative w-full h-full rounded-none overflow-hidden shadow-2xl border border-white/20">
                         <Image
                           src={urlFor(item.image).width(800).height(600).url()}
                           alt={item.title}
                           fill
-                          className="object-cover transition-transform duration-700 group-hover:scale-105"
+                          className="object-cover transition-all duration-700 group-hover:scale-105 filter grayscale group-hover:grayscale-0"
                         />
                       </div>
                     ) : (
