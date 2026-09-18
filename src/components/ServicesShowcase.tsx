@@ -101,8 +101,8 @@ export default function ServicesShowcase({ services = [] }: ServicesShowcaseProp
         return (
           <article key={service._id} className="group flex flex-col">
             <Link href={href} className="block no-underline">
-              {/* Image Container with smooth rounded corners */}
-              <div className="w-full aspect-[16/10] rounded-2xl md:rounded-[22px] overflow-hidden relative bg-zinc-900/80 border border-white/[0.08] shadow-2xl">
+              {/* Image Container with sharp square corners */}
+              <div className="w-full aspect-[16/10] rounded-none overflow-hidden relative bg-zinc-900/80 border border-white/[0.08] shadow-2xl">
                 {imageSrc ? (
                   <Image
                     src={imageSrc}
