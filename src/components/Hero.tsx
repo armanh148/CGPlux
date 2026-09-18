@@ -81,7 +81,7 @@ export default function Hero({
           loop
           muted
           playsInline
-          className="w-full h-full object-cover opacity-75"
+          className="w-full h-full object-cover opacity-70"
           poster="/hero-bg.jpg"
         >
           <source src="/HERO-BG.mp4" type="video/mp4" />
