@@ -149,7 +149,7 @@ export default function TestimonialsSlider({ testimonials }: TestimonialsSliderP
             <button
               type="button"
               onClick={prevPage}
-              className="w-11 h-11 rounded-full bg-white/5 hover:bg-white/15 text-white border border-white/15 shadow-md flex items-center justify-center transition-all duration-300 cursor-pointer text-lg font-bold"
+              className="w-11 h-11 rounded-none bg-white/5 hover:bg-white/15 text-white border border-white/15 shadow-md flex items-center justify-center transition-all duration-300 cursor-pointer text-lg font-bold"
               aria-label="Previous testimonials"
             >
               ‹
@@ -157,7 +157,7 @@ export default function TestimonialsSlider({ testimonials }: TestimonialsSliderP
             <button
               type="button"
               onClick={nextPage}
-              className="w-11 h-11 rounded-full bg-white text-black shadow-md flex items-center justify-center hover:bg-zinc-200 transition-all duration-300 cursor-pointer text-lg font-bold"
+              className="w-11 h-11 rounded-none bg-white text-black shadow-md flex items-center justify-center hover:bg-zinc-200 transition-all duration-300 cursor-pointer text-lg font-bold"
               aria-label="Next testimonials"
             >
               ›
@@ -181,7 +181,7 @@ export default function TestimonialsSlider({ testimonials }: TestimonialsSliderP
             return (
               <div
                 key={item._id}
-                className="ts-feedback-card bg-[#0d0d12] rounded-2xl sm:rounded-3xl p-7 sm:p-8 border border-white/10 flex flex-col justify-between hover:border-white/25 transition-all duration-500 shadow-2xl group"
+                className="ts-feedback-card bg-[#0d0d12] rounded-none p-6 sm:p-7 border border-white/10 flex flex-col justify-between hover:border-white/25 transition-all duration-500 shadow-2xl group"
               >
                 <div>
                   {/* Top Row: Quote Icon + Star Rating */}
@@ -208,7 +208,7 @@ export default function TestimonialsSlider({ testimonials }: TestimonialsSliderP
                 {/* Bottom Author Profile Info */}
                 <div className="flex items-center gap-3.5 pt-4 border-t border-white/10">
                   {/* Avatar Photo */}
-                  <div className="relative w-12 h-12 rounded-full overflow-hidden shrink-0 border border-white/15 shadow-xs">
+                  <div className="relative w-12 h-12 rounded-none overflow-hidden shrink-0 border border-white/15 shadow-xs">
                     <Image
                       src={avatarSrc}
                       alt={item.author}
@@ -241,8 +241,8 @@ export default function TestimonialsSlider({ testimonials }: TestimonialsSliderP
               onClick={() => setActivePage(idx)}
               className={`transition-all duration-300 cursor-pointer ${
                 activePage === idx
-                  ? "w-4 h-2 rounded-full bg-white"
-                  : "w-2 h-2 rounded-full bg-white/20 hover:bg-white/50"
+                  ? "w-4 h-2 rounded-none bg-white"
+                  : "w-2 h-2 rounded-none bg-white/20 hover:bg-white/50"
               }`}
               aria-label={`Go to slide ${idx + 1}`}
             />

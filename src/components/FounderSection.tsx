@@ -111,8 +111,8 @@ export default function FounderSection({
   return (
     <section ref={ref} className="py-20 md:py-32 bg-black relative overflow-hidden">
       <div className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12">
-        {/* Main Showcase Panel (Light Cream Background matching reference image) */}
-        <div className="leadership-animate w-full bg-[#00000] rounded-[36px] sm:rounded-[44px] p-6 sm:p-10 lg:p-14 text-black shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+        {/* Main Showcase Panel */}
+        <div className="leadership-animate w-full bg-black rounded-none p-6 sm:p-10 lg:p-14 text-white shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center border border-white/10">
           
           {/* LEFT COLUMN: Large Typography, Social Pills & Key Metrics */}
           <div className="lg:col-span-6 xl:col-span-6 flex flex-col justify-between h-full pr-0 lg:pr-4">
@@ -237,7 +237,7 @@ export default function FounderSection({
           {/* RIGHT COLUMN: Vibrant Yellow Notched Card & Visual Leader Portrait */}
           <div className="lg:col-span-6 xl:col-span-6 relative w-full flex items-center justify-center">
             {/* The Signature Yellow Card Container */}
-            <div className="relative w-full aspect-[4/4.8] sm:aspect-[4/4.3] lg:aspect-[4/4.6] bg-[#F4AC3B] rounded-[32px] sm:rounded-[40px] overflow-hidden shadow-xl flex flex-col justify-between">
+            <div className="relative w-full aspect-[4/4.8] sm:aspect-[4/4.3] lg:aspect-[4/4.6] bg-[#F4AC3B] rounded-none overflow-hidden shadow-xl flex flex-col justify-between">
               
               {/* Top Bar inside Yellow Card */}
               <div className="relative z-20 p-6 sm:p-8 flex items-center justify-between">
@@ -247,7 +247,7 @@ export default function FounderSection({
                 </div>
 
                 {/* Top Right Globe Badge (matching screenshot) */}
-                <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-black text-white flex items-center justify-center shadow-md">
+                <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-none bg-black text-white flex items-center justify-center shadow-md">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                     <circle cx="12" cy="12" r="10" />
                     <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
@@ -265,11 +265,9 @@ export default function FounderSection({
                 />
               </div>
 
-
-
               {/* Leader Role Badge at Bottom Right of Yellow Card */}
               <div className="relative z-20 p-6 sm:p-8 flex justify-end">
-                <div className="bg-black/80 backdrop-blur-md text-white px-4 py-2 rounded-full font-mono text-[11px] uppercase tracking-widest font-semibold shadow-lg">
+                <div className="bg-black/80 backdrop-blur-md text-white px-4 py-2 rounded-none font-mono text-[11px] uppercase tracking-widest font-semibold shadow-lg border border-white/10">
                   {currentLeader.name} — {currentLeader.role}
                 </div>
               </div>
