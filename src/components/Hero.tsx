@@ -72,14 +72,28 @@ export default function Hero({
   return (
     <section
       ref={sectionRef}
-      className="relative w-full min-h-[100svh] pt-28 sm:pt-32 lg:pt-36 flex flex-col justify-between overflow-hidden bg-[#09090b] border-b border-white/[0.08]"
+      className="relative w-full min-h-[120svh] pt-32 sm:pt-36 lg:pt-44 flex flex-col justify-between overflow-hidden bg-[#09090b] border-b border-white/[0.08]"
     >
+      {/* Background Video */}
+      <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover"
+          poster="/hero-bg.jpg"
+        >
+          <source src="/HERO-BG.mp4" type="video/mp4" />
+        </video>
+      </div>
+
       {/* GlitterWrap — Ambient sparkling particle background */}
       <GlitterWrap
         particleCount={150}
         speed={0.7}
         opacity={0.85}
-        className="absolute inset-0 w-full h-full pointer-events-none z-0"
+        className="absolute inset-0 w-full h-full pointer-events-none z-[1]"
       />
 
       {/* Fine Architectural Grid & Subtle Radial Ambient */}
@@ -87,7 +101,7 @@ export default function Hero({
       <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-white/[0.02] rounded-full blur-[120px] pointer-events-none z-[1]" />
 
       {/* Main Container */}
-      <div className="relative z-10 w-full px-6 lg:px-12 pt-6 lg:pt-12 pb-16 flex-1 flex flex-col justify-center">
+      <div className="relative z-10 w-full px-6 lg:px-12 pt-10 lg:pt-16 pb-24 sm:pb-32 flex-1 flex flex-col justify-center">
         {/* Top Badges (Trust Proof) */}
         <div className="flex flex-wrap items-center gap-3 mb-8">
           <div className="hero-badge redstone-pill text-zinc-300">

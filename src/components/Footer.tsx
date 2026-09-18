@@ -203,24 +203,6 @@ export default function Footer({
 
       </div>
 
-      {/* ── CGPLUX Signature Footer Strip ── */}
-      <div className="relative w-full flex items-end justify-center overflow-hidden pt-4 sm:pt-6 md:pt-8 pb-0 select-none bg-[#09090b] border-t border-white/[0.06]">
-        <div
-          className="w-full font-heading font-black tracking-tighter text-center leading-none pointer-events-none whitespace-nowrap select-none"
-          style={{
-            fontSize: "clamp(56px, 24vw, 560px)",
-            letterSpacing: "-0.04em",
-            color: "transparent",
-            WebkitTextStroke: "1.5px rgba(255, 255, 255, 0.28)",
-            backgroundImage: "linear-gradient(180deg, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0.08) 100%)",
-            WebkitBackgroundClip: "text",
-            backgroundClip: "text",
-            marginBottom: "-4.5vw",
-          }}
-        >
-          CGPLUX
-        </div>
-      </div>
     </footer>
 
   );
