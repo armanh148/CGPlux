@@ -369,12 +369,16 @@ const SERVICES_DATABASE: Record<string, ServiceDetailData> = {
 };
 
 function getFallbackService(slug: string): ServiceDetailData | null {
+  const normalized = slug.toLowerCase();
+  if (normalized === "web-development") {
+    return SERVICES_DATABASE["website-development"];
+  }
   if (SERVICES_DATABASE[slug]) {
     return SERVICES_DATABASE[slug];
   }
   // Try finding case-insensitive or partial matches
   const foundKey = Object.keys(SERVICES_DATABASE).find(
-    (key) => key.toLowerCase() === slug.toLowerCase() || slug.toLowerCase().includes(key.toLowerCase())
+    (key) => key.toLowerCase() === normalized || normalized.includes(key.toLowerCase()) || key.toLowerCase().includes(normalized)
   );
   if (foundKey) {
     return SERVICES_DATABASE[foundKey];
