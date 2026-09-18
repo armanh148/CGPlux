@@ -196,11 +196,11 @@ export default function BlogList({
             <Link
               key={post._id}
               href={post.slug ? `/blog/${post.slug.current}` : "#"}
-              className="blog-card-item group relative bg-[#12131C] border border-white/10 hover:border-white/25 rounded-2xl p-5 flex flex-col justify-between transition-all duration-300 shadow-xl no-underline"
+              className="blog-card-item group relative bg-[#12131C] border border-white/10 hover:border-white/25 rounded-none flex flex-col justify-between transition-all duration-300 shadow-xl no-underline overflow-hidden"
             >
               <div>
-                {/* Cover Image */}
-                <div className="relative w-full aspect-[16/10] rounded-xl overflow-hidden mb-5 border border-white/5">
+                {/* Cover Image - Edge-to-edge with no padding or radius */}
+                <div className="relative w-full aspect-[16/10] overflow-hidden border-b border-white/10">
                   <img
                     src={
                       typeof post.image === "string"
@@ -212,36 +212,39 @@ export default function BlogList({
                   />
                 </div>
 
-                {/* Category Tags Row */}
-                <div className="flex items-center gap-2 flex-wrap mb-3">
-                  {tags.map((tag, idx) => (
-                    <span
-                      key={idx}
-                      className={`text-[11px] font-medium px-3 py-0.5 rounded-full border ${getTagStyle(
-                        tag
-                      )}`}
-                    >
-                      {tag}
-                    </span>
-                  ))}
+                {/* Content area with inner padding */}
+                <div className="p-5 sm:p-6">
+                  {/* Category Tags Row */}
+                  <div className="flex items-center gap-2 flex-wrap mb-3">
+                    {tags.map((tag, idx) => (
+                      <span
+                        key={idx}
+                        className={`text-[11px] font-medium px-2.5 py-0.5 rounded-none border ${getTagStyle(
+                          tag
+                        )}`}
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Date & Read Time */}
+                  <div className="font-mono text-xs text-zinc-500 mb-3">
+                    {formatDate(post.publishedAt)} — {post.readTime || "9 min read"}
+                  </div>
+
+                  {/* Title */}
+                  <h3 className="font-heading font-bold text-xl sm:text-2xl text-white leading-snug tracking-tight mb-3 group-hover:text-emerald-400 transition-colors duration-300 line-clamp-2">
+                    {post.title}
+                  </h3>
+
+                  {/* Excerpt */}
+                  {post.excerpt && (
+                    <p className="text-zinc-400 text-xs sm:text-sm leading-relaxed font-light line-clamp-3">
+                      {post.excerpt}
+                    </p>
+                  )}
                 </div>
-
-                {/* Date & Read Time */}
-                <div className="font-mono text-xs text-zinc-500 mb-3">
-                  {formatDate(post.publishedAt)} — {post.readTime || "9 min read"}
-                </div>
-
-                {/* Title */}
-                <h3 className="font-heading font-bold text-xl sm:text-2xl text-white leading-snug tracking-tight mb-3 group-hover:text-emerald-400 transition-colors duration-300 line-clamp-2">
-                  {post.title}
-                </h3>
-
-                {/* Excerpt */}
-                {post.excerpt && (
-                  <p className="text-zinc-400 text-xs sm:text-sm leading-relaxed font-light line-clamp-3">
-                    {post.excerpt}
-                  </p>
-                )}
               </div>
             </Link>
           );
