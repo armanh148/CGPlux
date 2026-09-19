@@ -137,10 +137,10 @@ export default async function ContactPage() {
               <div className="mt-4">
                 <button
                   type="submit"
-                  className="group relative inline-flex items-center justify-center gap-3 h-14 md:h-16 w-full md:w-auto px-10 bg-white font-mono text-xs md:text-sm uppercase tracking-[0.2em] transition-all duration-500 overflow-hidden cursor-pointer"
+                  className="group relative inline-flex items-center justify-center gap-3 h-14 md:h-16 w-full md:w-auto px-10 bg-white hover:bg-zinc-200 font-mono text-xs md:text-sm uppercase tracking-[0.2em] transition-all duration-500 overflow-hidden cursor-pointer"
                 >
-                  <span className="relative z-10 font-bold text-brand-dark group-hover:text-white transition-colors duration-500">Send Message</span>
-                  <div className="absolute inset-0 bg-brand-accent transform scale-x-0 origin-left group-hover:scale-x-100 transition-transform duration-500 ease-out" />
+                  <span className="relative z-10 font-bold text-black group-hover:text-black transition-colors duration-500">Send Message</span>
+                  <div className="absolute inset-0 bg-zinc-200 transform scale-x-0 origin-left group-hover:scale-x-100 transition-transform duration-500 ease-out" />
                 </button>
               </div>
             </form>
