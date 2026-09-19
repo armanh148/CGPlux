@@ -34,10 +34,10 @@ export default function Footer({
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
             <Link
               href="/contact"
-              className="inline-flex items-center gap-3 px-8 py-5 bg-white hover:bg-zinc-200 text-black font-mono text-xs uppercase tracking-widest font-bold rounded-sm transition-all duration-300 shadow-xl shadow-white/5"
+              className="inline-flex items-center gap-3 px-8 py-5 bg-white hover:bg-zinc-200 text-black hover:text-black font-mono text-xs uppercase tracking-widest font-bold rounded-sm transition-all duration-300 shadow-xl shadow-white/5 group"
             >
-              <span>Let&apos;s Begin</span>
-              <span className="text-lg leading-none">&rarr;</span>
+              <span className="text-black group-hover:text-black">Let&apos;s Begin</span>
+              <span className="text-lg leading-none text-black group-hover:text-black">&rarr;</span>
             </Link>
 
             <a
