@@ -209,7 +209,8 @@ export default function PortfolioGrid({ items }: PortfolioGridProps) {
             </div>
             <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none shadow-[inset_0_0_80px_rgba(56,199,192,0.06)]" />
           </div>
-        ))}
+        );
+      })}
       </div>
     </>
   );
