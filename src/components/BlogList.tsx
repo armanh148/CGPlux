@@ -196,7 +196,7 @@ export default function BlogList({
             <Link
               key={post._id}
               href={post.slug ? `/blog/${post.slug.current}` : "#"}
-              className="blog-card-item group relative bg-[#12131C] border border-white/10 hover:border-white/25 rounded-none flex flex-col justify-between transition-all duration-300 shadow-xl no-underline overflow-hidden"
+              className="blog-card-item group relative bg-[#12131C] border border-white/10 hover:border-white/25 rounded-none flex flex-col justify-between transition-all duration-500 shadow-xl no-underline overflow-hidden filter grayscale hover:grayscale-0"
             >
               <div>
                 {/* Cover Image - Edge-to-edge with no padding or radius */}
@@ -208,7 +208,7 @@ export default function BlogList({
                         : "/images/blog/blog-1.jpg"
                     }
                     alt={post.title}
-                    className="w-full h-full object-cover transition-all duration-700 ease-out filter grayscale group-hover:grayscale-0 group-hover:scale-105"
+                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   />
                 </div>
 

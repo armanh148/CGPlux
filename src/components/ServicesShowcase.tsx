@@ -99,7 +99,7 @@ export default function ServicesShowcase({ services = [] }: ServicesShowcaseProp
             : null;
 
         return (
-          <article key={service._id} className="group flex flex-col">
+          <article key={service._id} className="group flex flex-col filter grayscale hover:grayscale-0 transition-all duration-500">
             <Link href={href} className="block no-underline">
               {/* Image Container with sharp square corners */}
               <div className="w-full aspect-[16/10] rounded-none overflow-hidden relative bg-zinc-900/80 border border-white/[0.08] group-hover:border-white/20 shadow-2xl transition-colors duration-500">
