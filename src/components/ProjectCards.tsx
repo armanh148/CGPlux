@@ -235,7 +235,7 @@ export default function ProjectCards({ projects }: ProjectCardsProps) {
           },
         }
       );
-    }, sectionRef);
+    }, sectionRef.current || undefined);
 
     return () => {
       ctx.revert();

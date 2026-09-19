@@ -72,7 +72,7 @@ export default function ProcessSection() {
           scrollTrigger: { trigger: ".proc-grid", start: "top 82%", toggleActions: "play none none none" },
         }
       );
-    }, sectionRef);
+    }, sectionRef.current || undefined);
     return () => { ctx.revert(); ScrollTrigger.getAll().forEach(st => st.refresh()); };
   }, []);
 

@@ -73,19 +73,62 @@ export default function PortfolioGrid({ items }: PortfolioGridProps) {
   }, [activeFilter]);
 
   const fallback = [
-    { title: "Dream Glaze CGI Animation", category: "3d-animation" },
-    { title: "Valentino Uomo Perfume 3D", category: "3d-animation" },
-    { title: "3D Visualization For Baaroq", category: "3d-visualization" },
-    { title: "Ultra Realistic 3D Product Rendering", category: "3d-visualization" },
-    { title: "Rolex Submarine Watch 3D", category: "3d-animation" },
-    { title: "3D Animation Of Shoes", category: "3d-animation" },
+    {
+      title: "Dream Glaze CGI Animation",
+      category: "3d-animation",
+      image: "/images/portfolio/dream_glaze.jpg",
+    },
+    {
+      title: "Valentino Uomo Perfume 3D",
+      category: "3d-animation",
+      image: "/images/portfolio/valentino_perfume.jpg",
+    },
+    {
+      title: "3D Visualization For Baaroq",
+      category: "3d-visualization",
+      image: "/images/portfolio/baaroq_interior.jpg",
+    },
+    {
+      title: "Ultra Realistic 3D Product Rendering",
+      category: "3d-visualization",
+      image: "/images/portfolio/product_headphones.jpg",
+    },
+    {
+      title: "Rolex Submarine Watch 3D",
+      category: "3d-animation",
+      image: "/images/portfolio/rolex_watch.jpg",
+    },
+    {
+      title: "3D Animation Of Shoes",
+      category: "3d-animation",
+      image: "/images/portfolio/shoes_3d.jpg",
+    },
+    {
+      title: "Nordic Villa Architectural 3D",
+      category: "3d-architectural",
+      image: "/images/portfolio/luxury_villa.jpg",
+    },
+    {
+      title: "Mecha Robotics CGI Commercial",
+      category: "cgi-advertisement",
+      image: "/images/services/3d.png",
+    },
   ];
 
   const displayItems: PortfolioItem[] = items.length > 0
-    ? filtered
+    ? filtered.map((item, idx) => ({
+        ...item,
+        image: item.image || fallback[idx % fallback.length]?.image,
+      }))
     : fallback
         .filter((f) => !activeFilter || f.category === activeFilter)
-        .map((f, i) => ({ _id: String(i), title: f.title, slug: { current: f.title.toLowerCase().replace(/\s+/g, "-") }, category: f.category }));
+        .map((f, i) => ({
+          _id: String(i),
+          title: f.title,
+          slug: { current: f.title.toLowerCase().replace(/\s+/g, "-") },
+          category: f.category,
+          image: f.image,
+        }));
 
   return (
     <>
@@ -122,27 +165,35 @@ export default function PortfolioGrid({ items }: PortfolioGridProps) {
       </div>
 
       <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
-        {displayItems.map((item) => (
-          <div
-            key={item._id}
-            className="portfolio-card opacity-0 project-card magnetic relative aspect-[3/4] rounded-xl border border-white/[0.08] bg-black overflow-hidden group cursor-default filter grayscale group-hover:grayscale-0 transition-all duration-700 ease-out"
-          >
-            <div className="absolute inset-0 transition-transform duration-[1.5s] ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-[1.05]">
-              {item.image ? (
-                <Image
-                  src={urlFor(item.image).width(600).height(800).url()}
-                  alt={item.title}
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                  className="object-cover transition-all duration-[1.5s] ease-[cubic-bezier(0.25,1,0.5,1)] filter grayscale group-hover:grayscale-0 brightness-[0.85] group-hover:brightness-100"
-                />
-              ) : (
-                <>
-                  <div className="absolute inset-0 bg-gradient-to-br from-slate-900/50 to-black filter grayscale group-hover:grayscale-0 transition-all duration-700" />
-                  <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(56,199,192,0.15),transparent_50%)] opacity-50 group-hover:opacity-100 transition-opacity duration-700 filter grayscale group-hover:grayscale-0" />
-                </>
-              )}
-            </div>
+        {displayItems.map((item) => {
+          const imageSrc =
+            typeof item.image === "string"
+              ? item.image
+              : item.image
+              ? urlFor(item.image).width(600).height(800).url()
+              : null;
+
+          return (
+            <div
+              key={item._id}
+              className="portfolio-card opacity-0 project-card magnetic relative aspect-[3/4] rounded-xl border border-white/[0.08] bg-black overflow-hidden group cursor-default filter grayscale group-hover:grayscale-0 transition-all duration-700 ease-out"
+            >
+              <div className="absolute inset-0 transition-transform duration-[1.5s] ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-[1.05]">
+                {imageSrc ? (
+                  <Image
+                    src={imageSrc}
+                    alt={item.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                    className="object-cover transition-all duration-[1.5s] ease-[cubic-bezier(0.25,1,0.5,1)] filter grayscale group-hover:grayscale-0 brightness-[0.85] group-hover:brightness-100"
+                  />
+                ) : (
+                  <>
+                    <div className="absolute inset-0 bg-gradient-to-br from-slate-900/50 to-black filter grayscale group-hover:grayscale-0 transition-all duration-700" />
+                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(56,199,192,0.15),transparent_50%)] opacity-50 group-hover:opacity-100 transition-opacity duration-700 filter grayscale group-hover:grayscale-0" />
+                  </>
+                )}
+              </div>
             
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-90 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 

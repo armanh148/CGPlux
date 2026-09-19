@@ -125,7 +125,7 @@ export default function ServiceGrid({ services }: ServiceGridProps) {
           scrollTrigger: { trigger: ".sg-cta", start: "top 90%", toggleActions: "play none none none" },
         }
       );
-    }, sectionRef);
+    }, sectionRef.current || undefined);
 
     return () => { ctx.revert(); ScrollTrigger.getAll().forEach(st => st.refresh()); };
   }, []);
