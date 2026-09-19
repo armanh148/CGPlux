@@ -57,10 +57,12 @@ export default async function ServicesPage() {
           </div>
           <Link
             href="/contact"
-            className="inline-flex items-center gap-3 px-6 py-3 border border-zinc-700 bg-zinc-900/80 hover:bg-white text-zinc-200 hover:text-black font-mono text-xs uppercase tracking-widest font-bold rounded-sm transition-all duration-300 group"
+            className="inline-flex items-center gap-3 px-6 py-3 border border-zinc-700 hover:border-white bg-zinc-900/80 hover:bg-white text-zinc-200 hover:text-black font-mono text-xs uppercase tracking-widest font-bold rounded-sm transition-all duration-300 group"
           >
-            <span>Request Service Proposal</span>
-            <span className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+            <span className="text-zinc-200 group-hover:text-black transition-colors duration-300">
+              Request Service Proposal
+            </span>
+            <span className="text-zinc-400 group-hover:text-black transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
               ↗
             </span>
           </Link>
