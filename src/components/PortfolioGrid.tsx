@@ -176,26 +176,26 @@ export default function PortfolioGrid({ items }: PortfolioGridProps) {
           return (
             <div
               key={item._id}
-              className="portfolio-card opacity-0 project-card magnetic relative aspect-[3/4] rounded-xl border border-white/[0.08] bg-black overflow-hidden group cursor-default filter grayscale group-hover:grayscale-0 transition-all duration-700 ease-out"
+              className="portfolio-card opacity-0 project-card magnetic relative aspect-[3/4] rounded-xl border border-white/[0.08] hover:border-white/30 bg-black overflow-hidden group cursor-pointer transition-all duration-500 ease-out"
             >
-              <div className="absolute inset-0 transition-transform duration-[1.5s] ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-[1.05]">
+              <div className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-105">
                 {imageSrc ? (
                   <Image
                     src={imageSrc}
                     alt={item.title}
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                    className="object-cover transition-all duration-[1.5s] ease-[cubic-bezier(0.25,1,0.5,1)] filter grayscale group-hover:grayscale-0 brightness-[0.85] group-hover:brightness-100"
+                    className="object-cover transition-all duration-700 ease-out filter grayscale group-hover:grayscale-0 brightness-90 group-hover:brightness-100"
                   />
                 ) : (
                   <>
-                    <div className="absolute inset-0 bg-gradient-to-br from-slate-900/50 to-black filter grayscale group-hover:grayscale-0 transition-all duration-700" />
-                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(56,199,192,0.15),transparent_50%)] opacity-50 group-hover:opacity-100 transition-opacity duration-700 filter grayscale group-hover:grayscale-0" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-slate-900/50 to-black transition-all duration-700" />
+                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(56,199,192,0.15),transparent_50%)] opacity-50 group-hover:opacity-100 transition-opacity duration-700" />
                   </>
                 )}
               </div>
             
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-90 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent pointer-events-none transition-opacity duration-700" />
 
             <div className="absolute left-0 right-0 bottom-0 p-8 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-[1s] ease-[cubic-bezier(0.25,1,0.5,1)] z-10 pointer-events-none">
               {item.category && (
