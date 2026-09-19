@@ -317,10 +317,10 @@ export default function TeamGrid({ members }: TeamGridProps) {
 
         <Link
           href="/contact"
-          className="inline-flex items-center justify-between gap-6 px-7 py-4 bg-white hover:bg-zinc-200 text-black font-mono text-xs uppercase tracking-widest font-bold rounded-sm transition-all duration-300 shadow-xl shadow-white/5 group self-start md:self-auto"
+          className="inline-flex items-center justify-between gap-6 px-7 py-4 bg-white hover:bg-zinc-200 text-black hover:text-black font-mono text-xs uppercase tracking-widest font-bold rounded-sm transition-all duration-300 shadow-xl shadow-white/5 group self-start md:self-auto"
         >
-          <span>Get started</span>
-          <span className="text-base transition-transform duration-300 group-hover:translate-x-1">
+          <span className="text-black group-hover:text-black">Get started</span>
+          <span className="text-base text-black group-hover:text-black transition-transform duration-300 group-hover:translate-x-1">
             →
           </span>
         </Link>

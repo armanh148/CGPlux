@@ -150,10 +150,10 @@ export default function SingleServiceClient({ service }: { service: ServiceDetai
             <div className="svc-animate flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
               <Link
                 href="/contact"
-                className="px-7 py-3.5 bg-white text-black hover:bg-zinc-200 font-mono text-xs uppercase tracking-widest font-bold rounded-sm text-center transition-all duration-200 shadow-lg flex items-center justify-center gap-2 group"
+                className="px-7 py-3.5 bg-white text-black hover:bg-zinc-200 hover:text-black font-mono text-xs uppercase tracking-widest font-bold rounded-sm text-center transition-all duration-200 shadow-lg flex items-center justify-center gap-2 group"
               >
-                <span>REQUEST SERVICE PROPOSAL</span>
-                <span className="group-hover:translate-x-0.5 transition-transform">&rarr;</span>
+                <span className="text-black group-hover:text-black">REQUEST SERVICE PROPOSAL</span>
+                <span className="text-black group-hover:text-black group-hover:translate-x-0.5 transition-transform">&rarr;</span>
               </Link>
 
               <Link
@@ -360,10 +360,10 @@ export default function SingleServiceClient({ service }: { service: ServiceDetai
 
           <Link
             href="/contact"
-            className="px-8 py-4 bg-white text-black hover:bg-zinc-200 font-mono text-xs uppercase tracking-widest font-bold rounded-sm flex-shrink-0 transition-all duration-200 shadow-xl flex items-center gap-2 group whitespace-nowrap"
+            className="px-8 py-4 bg-white text-black hover:bg-zinc-200 hover:text-black font-mono text-xs uppercase tracking-widest font-bold rounded-sm flex-shrink-0 transition-all duration-200 shadow-xl flex items-center gap-2 group whitespace-nowrap"
           >
-            <span>SCHEDULE DISCOVERY</span>
-            <span className="group-hover:translate-x-1 transition-transform">&rarr;</span>
+            <span className="text-black group-hover:text-black">SCHEDULE DISCOVERY</span>
+            <span className="text-black group-hover:text-black group-hover:translate-x-1 transition-transform">&rarr;</span>
           </Link>
         </div>
       </div>
