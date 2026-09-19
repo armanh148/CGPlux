@@ -68,6 +68,54 @@ export default function ServicesShowcase({ services = [] }: ServicesShowcaseProp
         "Photorealistic 3D product renders and cinematic CGI commercial animation.",
       image: "/images/services/3d.png",
     },
+    {
+      _id: "branding-design",
+      title: "Branding & UI/UX Design",
+      slug: { current: "branding-design" },
+      description:
+        "Design systems, high-fidelity prototypes, brand guidelines, and intuitive digital interfaces.",
+      image: "/images/services/branding_design.jpg",
+    },
+    {
+      _id: "crm-system",
+      title: "CRM & Enterprise Systems",
+      slug: { current: "crm-system" },
+      description:
+        "Bespoke CRM engines, automated operational workflows, and real-time executive analytics.",
+      image: "/images/services/crm_system.jpg",
+    },
+    {
+      _id: "e-commerce",
+      title: "Headless E-Commerce",
+      slug: { current: "e-commerce" },
+      description:
+        "Lightning-fast digital storefronts with Shopify Plus, Medusa, and frictionless checkout routing.",
+      image: "/images/services/ecommerce.jpg",
+    },
+    {
+      _id: "app-development",
+      title: "Mobile App Development",
+      slug: { current: "app-development" },
+      description:
+        "Native and cross-platform mobile apps for iOS and Android with buttery-smooth interactions.",
+      image: "/images/services/mobile_app.jpg",
+    },
+    {
+      _id: "site-support",
+      title: "Cloud DevOps & 24/7 SLA",
+      slug: { current: "site-support" },
+      description:
+        "Continuous infrastructure monitoring, zero-downtime CI/CD pipelines, and proactive incident response.",
+      image: "/images/services/cloud_devops.jpg",
+    },
+    {
+      _id: "redesign",
+      title: "AI Automation & Modernization",
+      slug: { current: "redesign" },
+      description:
+        "Architectural modernization, AI integration, and migrating legacy platforms to cloud-native stacks.",
+      image: "/images/services/ai_solutions.jpg",
+    },
   ];
 
   // If dynamic services are provided, merge or prefer fallback visual structure
