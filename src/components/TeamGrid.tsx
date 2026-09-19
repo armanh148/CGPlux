@@ -225,7 +225,7 @@ export default function TeamGrid({ members }: TeamGridProps) {
                 <img
                   src={item.image || "/Client-1.avif"}
                   alt={item.name}
-                  className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+                  className="w-full h-full object-cover object-center filter grayscale group-hover:grayscale-0 transition-all duration-700 ease-out group-hover:scale-105"
                 />
               </div>
 

@@ -141,14 +141,14 @@ export default function FounderSection({
                 {currentLeader.bio}
               </p>
 
-              {/* Social Buttons with Official Brand Colors & White SVG Icons */}
+              {/* Social Buttons with Official Brand Colors & White SVG Icons (B&W by default, color on hover) */}
               <div className="flex items-center gap-3 mb-10 sm:mb-14">
                 {/* YouTube */}
                 <a
                   href="#"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-full bg-[#FF0000] text-white flex items-center justify-center shadow-md hover:scale-110 hover:shadow-red-500/30 transition-all duration-300"
+                  className="w-10 h-10 rounded-full bg-[#FF0000] text-white flex items-center justify-center shadow-md hover:scale-110 hover:shadow-red-500/30 transition-all duration-300 filter grayscale hover:grayscale-0"
                   title="YouTube"
                 >
                   <svg className="w-4 h-4 fill-white text-white" viewBox="0 0 24 24">
@@ -161,7 +161,7 @@ export default function FounderSection({
                   href={currentLeader.instagram || "#"}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white flex items-center justify-center shadow-md hover:scale-110 hover:shadow-pink-500/30 transition-all duration-300"
+                  className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white flex items-center justify-center shadow-md hover:scale-110 hover:shadow-pink-500/30 transition-all duration-300 filter grayscale hover:grayscale-0"
                   title="Instagram"
                 >
                   <svg className="w-4 h-4 fill-white text-white" viewBox="0 0 24 24">
@@ -174,7 +174,7 @@ export default function FounderSection({
                   href="#"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-full bg-[#1877F2] text-white flex items-center justify-center shadow-md hover:scale-110 hover:shadow-blue-500/30 transition-all duration-300"
+                  className="w-10 h-10 rounded-full bg-[#1877F2] text-white flex items-center justify-center shadow-md hover:scale-110 hover:shadow-blue-500/30 transition-all duration-300 filter grayscale hover:grayscale-0"
                   title="Facebook"
                 >
                   <svg className="w-4 h-4 fill-white text-white" viewBox="0 0 24 24">
@@ -187,7 +187,7 @@ export default function FounderSection({
                   href={currentLeader.linkedin || "#"}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-full bg-[#0A66C2] text-white flex items-center justify-center shadow-md hover:scale-110 hover:shadow-blue-600/30 transition-all duration-300"
+                  className="w-10 h-10 rounded-full bg-[#0A66C2] text-white flex items-center justify-center shadow-md hover:scale-110 hover:shadow-blue-600/30 transition-all duration-300 filter grayscale hover:grayscale-0"
                   title="LinkedIn"
                 >
                   <svg className="w-4 h-4 fill-white text-white" viewBox="0 0 24 24">
@@ -200,11 +200,11 @@ export default function FounderSection({
                   href="#"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center shadow-md hover:scale-110 hover:shadow-black/30 transition-all duration-300"
+                  className="w-10 h-10 rounded-full bg-zinc-800 hover:bg-white hover:text-black text-white flex items-center justify-center shadow-md hover:scale-110 transition-all duration-300"
                   title="X"
                 >
-                  <svg className="w-4 h-4 fill-white text-white" viewBox="0 0 24 24">
-                    <path fill="white" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                  <svg className="w-4 h-4 fill-white hover:fill-black text-white" viewBox="0 0 24 24">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
                   </svg>
                 </a>
               </div>
@@ -234,12 +234,12 @@ export default function FounderSection({
             </div>
           </div>
 
-          {/* RIGHT COLUMN: Vibrant Yellow Notched Card & Visual Leader Portrait */}
-          <div className="lg:col-span-6 xl:col-span-6 relative w-full flex items-center justify-center">
-            {/* The Signature Yellow Card Container */}
-            <div className="relative w-full aspect-[4/4.8] sm:aspect-[4/4.3] lg:aspect-[4/4.6] bg-[#F4AC3B] rounded-none overflow-hidden shadow-xl flex flex-col justify-between">
+          {/* RIGHT COLUMN: Visual Leader Portrait Card */}
+          <div className="lg:col-span-6 xl:col-span-6 relative w-full flex items-center justify-center group">
+            {/* The Signature Card Container */}
+            <div className="relative w-full aspect-[4/4.8] sm:aspect-[4/4.3] lg:aspect-[4/4.6] bg-black rounded-none overflow-hidden shadow-xl flex flex-col justify-between border border-white/10 filter grayscale group-hover:grayscale-0 hover:grayscale-0 transition-all duration-700 ease-out">
               
-              {/* Top Bar inside Yellow Card */}
+              {/* Top Bar inside Card */}
               <div className="relative z-20 p-6 sm:p-8 flex items-center justify-between">
                 {/* Handwritten / Script Watermark Signature */}
                 <div className="font-serif italic text-2xl sm:text-3xl font-normal text-white/90 tracking-wide select-none drop-shadow-xs">
@@ -247,7 +247,7 @@ export default function FounderSection({
                 </div>
 
                 {/* Top Right Globe Badge (matching screenshot) */}
-                <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-none bg-black text-white flex items-center justify-center shadow-md">
+                <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-none bg-black text-white flex items-center justify-center shadow-md border border-white/10">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                     <circle cx="12" cy="12" r="10" />
                     <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
@@ -256,16 +256,16 @@ export default function FounderSection({
               </div>
 
               {/* Central Leader Portrait Photo */}
-              <div className="absolute inset-0 w-full h-full z-10 overflow-hidden flex items-end justify-center bg-[#F4AC3B]">
+              <div className="absolute inset-0 w-full h-full z-10 overflow-hidden flex items-end justify-center bg-black">
                 <img
                   key={currentLeader.id}
                   src={currentLeader.photo}
                   alt={currentLeader.name}
-                  className="w-full h-full object-cover object-top filter contrast-[1.08] brightness-100 transition-all duration-700 ease-out animate-in fade-in"
+                  className="w-full h-full object-cover object-top filter grayscale group-hover:grayscale-0 contrast-[1.08] brightness-100 transition-all duration-700 ease-out group-hover:scale-105 animate-in fade-in"
                 />
               </div>
 
-              {/* Leader Role Badge at Bottom Right of Yellow Card */}
+              {/* Leader Role Badge at Bottom Right of Card */}
               <div className="relative z-20 p-6 sm:p-8 flex justify-end">
                 <div className="bg-black/80 backdrop-blur-md text-white px-4 py-2 rounded-none font-mono text-[11px] uppercase tracking-widest font-semibold shadow-lg border border-white/10">
                   {currentLeader.name} — {currentLeader.role}
