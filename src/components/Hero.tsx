@@ -85,12 +85,16 @@ export default function Hero({
       {/* Background Video */}
       <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
         <video
+          ref={videoRef}
           autoPlay
           loop
           muted
           playsInline
-          className="w-full h-full object-cover opacity-70"
-          poster="/hero-bg.jpg"
+          preload="auto"
+          onLoadedData={() => setIsVideoLoaded(true)}
+          className={`w-full h-full object-cover transition-opacity duration-1000 ${
+            isVideoLoaded ? "opacity-70" : "opacity-0"
+          }`}
         >
           <source src="/HERO-BG.mp4" type="video/mp4" />
         </video>
