@@ -176,7 +176,7 @@ export default function PortfolioGrid({ items }: PortfolioGridProps) {
           return (
             <div
               key={item._id}
-              className="portfolio-card opacity-0 project-card magnetic relative aspect-[3/4] rounded-xl border border-white/[0.08] hover:border-white/30 bg-black overflow-hidden group cursor-pointer transition-all duration-500 ease-out"
+              className="portfolio-card opacity-0 project-card magnetic relative aspect-[3/4] rounded-none border border-white/[0.08] hover:border-white/30 bg-black overflow-hidden group cursor-pointer transition-all duration-500 ease-out"
             >
               <div className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-105">
                 {imageSrc ? (
