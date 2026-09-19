@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { gsap } from "@/lib/gsap";
 import GlitterWrap from "@/components/GlitterWrap";
@@ -26,6 +26,14 @@ export default function Hero({
 }: HeroProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
   const textContainerRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+
+  useEffect(() => {
+    if (videoRef.current && videoRef.current.readyState >= 2) {
+      setIsVideoLoaded(true);
+    }
+  }, []);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
